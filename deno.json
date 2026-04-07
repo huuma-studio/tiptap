@@ -1,8 +1,14 @@
 {
   "name": "@huuma/tiptap",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "exports": {
-    "./editor": "./src/editor/mod.tsx"
+    "./editor": "./src/editor/mod.tsx",
+    "./marks/bold": "./src/marks/bold.tsx",
+    "./marks/italic": "./src/marks/italic.tsx",
+    "./marks/link": "./src/marks/link.tsx",
+    "./nodes/extension-list": "./src/nodes/extension-list.tsx",
+    "./nodes/extension-heading": "./src/nodes/heading.tsx",
+    "./nodes/extension-text": "./src/nodes/text.tsx"
   },
   "tasks": {
     "dev": "deno test --watch"
