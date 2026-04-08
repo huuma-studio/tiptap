@@ -15,7 +15,7 @@ const ItalicExtension: EditorExtension<typeof Italic> = {
           editor.get?.chain().focus().toggleItalic().run();
         }}
       >
-        <ItalicIcon size={18} />å
+        <ItalicIcon size={18} />
       </ToolBarButton>
     );
   },

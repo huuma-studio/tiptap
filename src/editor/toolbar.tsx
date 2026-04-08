@@ -2,7 +2,7 @@ import type { Props } from "@huuma/ui";
 
 export function ToolBar({ children }: Props) {
   return (
-    <ul class="flex gap-1 p-1">
+    <ul class="rich-text-editor__toolbar">
       {Array.isArray(children)
         ? children.map((child, i) => <li key={i}>{child}</li>)
         : children}
@@ -20,8 +20,8 @@ export function ToolBarButton(
   return (
     <button
       type="button"
-      class={`btn btn-icon--sm ${
-        active ? "bg-primary-100 text-primary-700" : ""
+      class={`rich-text-editor__toolbar__button ${
+        active ? "rich-text-editor__toolbar__button--active" : ""
       }`}
       on-click={click}
     >

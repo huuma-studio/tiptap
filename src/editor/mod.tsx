@@ -66,7 +66,7 @@ export class Editor {
     });
 
     return (
-      <div class="w-full bg-white border border-primary-100 rounded">
+      <div class="rich-text-editor">
         <ToolBar>
           {this.extensions.map((extension) =>
             extension.toolbarElement?.(editorRef)
