@@ -13,7 +13,7 @@ import {
   type Node,
 } from "@tiptap/core";
 
-import { generateHTML } from "@tiptap/html";
+import { generateHTML, generateJSON } from "@tiptap/html";
 
 import type { JSX } from "@huuma/ui/jsx-runtime";
 import { ToolBar } from "./toolbar.tsx";
@@ -28,15 +28,38 @@ export interface EditorExtension<
 }
 
 export class Editor {
-  private extensions: EditorExtension[];
+  #extensions: (Mark | Node | Extension)[];
+  #initOptions: Record<string, unknown>;
+  #toolbarElements: ((editorRef: Ref<Tiptap | null>) => JSX.Element)[] = [];
 
   constructor(extensions: EditorExtension[]) {
-    this.extensions = extensions;
+    this.#extensions = [...extensions.map((extension) => extension.extension)];
+    this.#initOptions = {
+      ...extensions.reduce(
+        (acc, extension) => ({ ...acc, ...extension.initOptions }),
+        {},
+      ),
+    };
+    extensions.forEach((extension) => {
+      if (extension.toolbarElement) {
+        this.#toolbarElements.push(extension.toolbarElement);
+      }
+    });
   }
 
-  toHTML(content: DocumentType): string {
+  toHTML(content?: Content): string {
+    if (!content) {
+      return "";
+    }
+
+    if (typeof content === "string") {
+      content = generateJSON(content, [
+        ...this.#extensions,
+      ]);
+    }
+
     return generateHTML(content, [
-      ...this.extensions.map((extension) => extension.extension),
+      ...this.#extensions,
     ]);
   }
 
@@ -61,19 +84,14 @@ export class Editor {
     $mount(() => {
       const element = elementRef.get;
 
-      const initOptions = this.extensions.reduce(
-        (acc, extension) => ({ ...acc, ...extension.initOptions }),
-        {},
-      );
-
       if (element) {
         const tiptap = new Tiptap({
           element,
           extensions: [
-            ...this.extensions.map((extension) => extension.extension),
+            ...this.#extensions,
           ],
           content,
-          ...initOptions,
+          ...this.#initOptions,
         });
 
         tiptap.on("selectionUpdate", () => updateRevision());
@@ -95,8 +113,8 @@ export class Editor {
     return (
       <div class="rich-text-editor">
         <ToolBar>
-          {this.extensions.map((extension) =>
-            extension.toolbarElement?.(editorRef)
+          {this.#toolbarElements.map((toolbarElement) =>
+            toolbarElement(editorRef)
           )}
         </ToolBar>
         <div bind={elementRef} />
@@ -113,7 +131,7 @@ export interface EditorRenderProps extends Omit<Props, "children"> {
 
 export interface RichTextEditorProps {
   editable?: boolean;
-  content?: DocumentType;
+  content?: Content;
   extensions: EditorExtension[];
   "on-change"?: (content: DocumentType) => void;
 }
@@ -125,7 +143,7 @@ export function RichTextEditor(
   return (editable ? editor.render({ "on-change": change, content }) : (
     <div
       dangerouslySetInnerHTML={{
-        __html: content ? editor.toHTML(content) : "Empty",
+        __html: editor.toHTML(content),
       }}
     />
   ));
