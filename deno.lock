@@ -14,16 +14,17 @@
     "jsr:@std/internal@^1.0.12": "1.0.12",
     "jsr:@std/path@^1.1.1": "1.1.4",
     "jsr:@std/path@^1.1.4": "1.1.4",
-    "npm:@tiptap/core@^3.22.2": "3.22.2_@tiptap+pm@3.22.2",
-    "npm:@tiptap/extension-bold@^3.22.2": "3.22.2_@tiptap+core@3.22.2__@tiptap+pm@3.22.2",
-    "npm:@tiptap/extension-document@^3.22.2": "3.22.2_@tiptap+core@3.22.2__@tiptap+pm@3.22.2",
-    "npm:@tiptap/extension-heading@^3.22.2": "3.22.2_@tiptap+core@3.22.2__@tiptap+pm@3.22.2",
-    "npm:@tiptap/extension-italic@^3.22.2": "3.22.2_@tiptap+core@3.22.2__@tiptap+pm@3.22.2",
-    "npm:@tiptap/extension-link@^3.22.2": "3.22.2_@tiptap+core@3.22.2__@tiptap+pm@3.22.2_@tiptap+pm@3.22.2",
-    "npm:@tiptap/extension-list@^3.22.2": "3.22.2_@tiptap+core@3.22.2__@tiptap+pm@3.22.2_@tiptap+pm@3.22.2",
-    "npm:@tiptap/extension-paragraph@^3.22.2": "3.22.2_@tiptap+core@3.22.2__@tiptap+pm@3.22.2",
-    "npm:@tiptap/extension-text@^3.22.2": "3.22.2_@tiptap+core@3.22.2__@tiptap+pm@3.22.2",
-    "npm:@tiptap/html@^3.22.2": "3.22.2_@tiptap+core@3.22.2__@tiptap+pm@3.22.2_@tiptap+pm@3.22.2_happy-dom@20.8.9",
+    "npm:@tiptap/core@^3.22.2": "3.22.3_@tiptap+pm@3.22.3",
+    "npm:@tiptap/extension-bold@^3.22.2": "3.22.2_@tiptap+core@3.22.3__@tiptap+pm@3.22.3_@tiptap+pm@3.22.3",
+    "npm:@tiptap/extension-document@^3.22.2": "3.22.2_@tiptap+core@3.22.3__@tiptap+pm@3.22.3_@tiptap+pm@3.22.3",
+    "npm:@tiptap/extension-heading@^3.22.2": "3.22.2_@tiptap+core@3.22.3__@tiptap+pm@3.22.3_@tiptap+pm@3.22.3",
+    "npm:@tiptap/extension-italic@^3.22.2": "3.22.2_@tiptap+core@3.22.3__@tiptap+pm@3.22.3_@tiptap+pm@3.22.3",
+    "npm:@tiptap/extension-link@^3.22.2": "3.22.2_@tiptap+core@3.22.3__@tiptap+pm@3.22.3_@tiptap+pm@3.22.3",
+    "npm:@tiptap/extension-list@^3.22.2": "3.22.2_@tiptap+core@3.22.3__@tiptap+pm@3.22.3_@tiptap+pm@3.22.3",
+    "npm:@tiptap/extension-paragraph@^3.22.2": "3.22.2_@tiptap+core@3.22.3__@tiptap+pm@3.22.3_@tiptap+pm@3.22.3",
+    "npm:@tiptap/extension-text@^3.22.2": "3.22.2_@tiptap+core@3.22.3__@tiptap+pm@3.22.3_@tiptap+pm@3.22.3",
+    "npm:@tiptap/html@^3.22.2": "3.22.2_@tiptap+core@3.22.3__@tiptap+pm@3.22.3_@tiptap+pm@3.22.3",
+    "npm:@tiptap/markdown@^3.22.3": "3.22.3_@tiptap+core@3.22.3__@tiptap+pm@3.22.3_@tiptap+pm@3.22.3",
     "npm:esbuild@0.27.2": "0.27.2",
     "npm:esbuild@~0.25.5": "0.25.12"
   },
@@ -357,37 +358,37 @@
     "@remirror/core-constants@3.0.0": {
       "integrity": "sha512-42aWfPrimMfDKDi4YegyS7x+/0tlzaqwPQCULLanv3DMIlu96KTJR0fM5isWX2UViOqlGnX6YFgqWepcX+XMNg=="
     },
-    "@tiptap/core@3.22.2_@tiptap+pm@3.22.2": {
-      "integrity": "sha512-atq35NkpeEphH6vNYJ0pTLLBA73FAbvTV9Ovd3AaTC5s99/KF5Q86zVJXvml8xPRcMGM6dLp+eSSd06oTscMSA==",
+    "@tiptap/core@3.22.3_@tiptap+pm@3.22.3": {
+      "integrity": "sha512-Dv9MKK5BDWCF0N2l6/Pxv3JNCce2kwuWf2cKMBc2bEetx0Pn6o7zlFmSxMvYK4UtG1Tw9Yg/ZHi6QOFWK0Zm9Q==",
       "dependencies": [
         "@tiptap/pm"
       ]
     },
-    "@tiptap/extension-bold@3.22.2_@tiptap+core@3.22.2__@tiptap+pm@3.22.2": {
+    "@tiptap/extension-bold@3.22.2_@tiptap+core@3.22.3__@tiptap+pm@3.22.3_@tiptap+pm@3.22.3": {
       "integrity": "sha512-bqsPJyKcT/RWse4e16U2EKhraR8a2+98TUuk1amG3yCyFJZStoO/j+pN0IqZdZZjr3WtxFyvwWp7Kc59UN+jUA==",
       "dependencies": [
         "@tiptap/core"
       ]
     },
-    "@tiptap/extension-document@3.22.2_@tiptap+core@3.22.2__@tiptap+pm@3.22.2": {
+    "@tiptap/extension-document@3.22.2_@tiptap+core@3.22.3__@tiptap+pm@3.22.3_@tiptap+pm@3.22.3": {
       "integrity": "sha512-yPw9pQeVC4QDh86TuyKCZxxM4g0NAw7mEtGnAo6EpxaBQr1wyBr9yFpys+QTsQpRTmyTf1VHp4iTTLuWHMljIw==",
       "dependencies": [
         "@tiptap/core"
       ]
     },
-    "@tiptap/extension-heading@3.22.2_@tiptap+core@3.22.2__@tiptap+pm@3.22.2": {
+    "@tiptap/extension-heading@3.22.2_@tiptap+core@3.22.3__@tiptap+pm@3.22.3_@tiptap+pm@3.22.3": {
       "integrity": "sha512-QPHLef+ikAyf7RVc4EdGeKxH4OEGb3ueCEwJ41RcYPtZ1BX9ueei7FC936guTdL1U7w3vQ65qfy86HznzkYgvw==",
       "dependencies": [
         "@tiptap/core"
       ]
     },
-    "@tiptap/extension-italic@3.22.2_@tiptap+core@3.22.2__@tiptap+pm@3.22.2": {
+    "@tiptap/extension-italic@3.22.2_@tiptap+core@3.22.3__@tiptap+pm@3.22.3_@tiptap+pm@3.22.3": {
       "integrity": "sha512-fmtQu2HDnV3sOZPdz0+1lOLI7UtrIhusohJj2UwOLQxG8qqhLwbvWx2OQTlfblgY0z+CjLRr6ANbNDxOTIblfg==",
       "dependencies": [
         "@tiptap/core"
       ]
     },
-    "@tiptap/extension-link@3.22.2_@tiptap+core@3.22.2__@tiptap+pm@3.22.2_@tiptap+pm@3.22.2": {
+    "@tiptap/extension-link@3.22.2_@tiptap+core@3.22.3__@tiptap+pm@3.22.3_@tiptap+pm@3.22.3": {
       "integrity": "sha512-TXfSoKmng5pecvQUZqdsx6ICeob5V5hhYOj2vCEtjfcjWsyCndqFIl1w+Nt/yI5ehrFNOVPyj3ZvcELuuAW6pw==",
       "dependencies": [
         "@tiptap/core",
@@ -395,26 +396,26 @@
         "linkifyjs"
       ]
     },
-    "@tiptap/extension-list@3.22.2_@tiptap+core@3.22.2__@tiptap+pm@3.22.2_@tiptap+pm@3.22.2": {
+    "@tiptap/extension-list@3.22.2_@tiptap+core@3.22.3__@tiptap+pm@3.22.3_@tiptap+pm@3.22.3": {
       "integrity": "sha512-Vq9xScgkA2A3Zj9dQ4WUBKK7u7UCzeSFRz9FcKTQVZHRPbZoqFGnlRUVngqsE7JXrCOthXQ1dXxgk40nAsBFRw==",
       "dependencies": [
         "@tiptap/core",
         "@tiptap/pm"
       ]
     },
-    "@tiptap/extension-paragraph@3.22.2_@tiptap+core@3.22.2__@tiptap+pm@3.22.2": {
+    "@tiptap/extension-paragraph@3.22.2_@tiptap+core@3.22.3__@tiptap+pm@3.22.3_@tiptap+pm@3.22.3": {
       "integrity": "sha512-EHZZzxVhvzEPDPWtRBF1YKhB+WCUjd1C2NhjHfL3Dl71PBqM3ZWA6qN7NDGPyNyGGWauui/NR/4X+5AfPqlHyA==",
       "dependencies": [
         "@tiptap/core"
       ]
     },
-    "@tiptap/extension-text@3.22.2_@tiptap+core@3.22.2__@tiptap+pm@3.22.2": {
+    "@tiptap/extension-text@3.22.2_@tiptap+core@3.22.3__@tiptap+pm@3.22.3_@tiptap+pm@3.22.3": {
       "integrity": "sha512-J1w7JwijfSD7ah0WfiwZ/DVWCIGT9x369RM4RJc57i44mIBElj7tl1dh+N5KPGOXKUup4gr7sSJAE38lgeaDMg==",
       "dependencies": [
         "@tiptap/core"
       ]
     },
-    "@tiptap/html@3.22.2_@tiptap+core@3.22.2__@tiptap+pm@3.22.2_@tiptap+pm@3.22.2_happy-dom@20.8.9": {
+    "@tiptap/html@3.22.2_@tiptap+core@3.22.3__@tiptap+pm@3.22.3_@tiptap+pm@3.22.3": {
       "integrity": "sha512-7OFjN137Sm0Y22MII8C3SyyQx5xnviE75MJZkWnn/wUeJRK9hB5EpSr8T73hIda0jkAiGCHe/YItlLlQ0Xn7qA==",
       "dependencies": [
         "@tiptap/core",
@@ -422,8 +423,16 @@
         "happy-dom"
       ]
     },
-    "@tiptap/pm@3.22.2": {
-      "integrity": "sha512-G2ENwIazoSKkAnN5MN5yN91TIZNFm6TxB74kPf3Empr2k9W51Hkcier70jHGpArhgcEaL4BVreuU1PRDRwCeGw==",
+    "@tiptap/markdown@3.22.3_@tiptap+core@3.22.3__@tiptap+pm@3.22.3_@tiptap+pm@3.22.3": {
+      "integrity": "sha512-Ajw8AkAae7IET1sxZqNv+dhZQSuLY0AHWocowTny1azyiBtmRRKygkGK0ysVA+k6UxmBD6K+tvnbpjQ0/ACl4A==",
+      "dependencies": [
+        "@tiptap/core",
+        "@tiptap/pm",
+        "marked"
+      ]
+    },
+    "@tiptap/pm@3.22.3": {
+      "integrity": "sha512-NjfWjZuvrqmpICT+GZWNIjtOdhPyqFKDMtQy7tsQ5rErM9L2ZQdy/+T/BKSO1JdTeBhdg9OP+0yfsqoYp2aT6A==",
       "dependencies": [
         "prosemirror-changeset",
         "prosemirror-collab",
@@ -584,6 +593,10 @@
         "punycode.js",
         "uc.micro"
       ],
+      "bin": true
+    },
+    "marked@17.0.6": {
+      "integrity": "sha512-gB0gkNafnonOw0obSTEGZTT86IuhILt2Wfx0mWH/1Au83kybTayroZ/V6nS25mN7u8ASy+5fMhgB3XPNrOZdmA==",
       "bin": true
     },
     "mdurl@2.0.0": {
@@ -767,7 +780,8 @@
       "npm:@tiptap/extension-list@^3.22.2",
       "npm:@tiptap/extension-paragraph@^3.22.2",
       "npm:@tiptap/extension-text@^3.22.2",
-      "npm:@tiptap/html@^3.22.2"
+      "npm:@tiptap/html@^3.22.2",
+      "npm:@tiptap/markdown@^3.22.3"
     ]
   }
 }

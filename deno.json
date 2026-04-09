@@ -28,7 +28,8 @@
     "@tiptap/extension-list": "npm:@tiptap/extension-list@^3.22.2",
     "@tiptap/extension-paragraph": "npm:@tiptap/extension-paragraph@^3.22.2",
     "@tiptap/extension-text": "npm:@tiptap/extension-text@^3.22.2",
-    "@tiptap/html": "npm:@tiptap/html@^3.22.2"
+    "@tiptap/html": "npm:@tiptap/html@^3.22.2",
+    "@tiptap/markdown": "npm:@tiptap/markdown@^3.22.3"
   },
   "compilerOptions": {
     "jsx": "precompile",
