@@ -1,11 +1,13 @@
 import { $mount } from "@huuma/ui/hooks/lifecycle";
 import { $ref } from "@huuma/ui/hooks/ref";
+import { $computed, $signal } from "@huuma/ui/hooks/signal";
 import type { Ref } from "@huuma/ui/ref";
 import type { Props } from "@huuma/ui";
 
 import {
   type DocumentType,
   Editor as Tiptap,
+  type Extension,
   type Mark,
   type Node,
 } from "@tiptap/core";
@@ -15,9 +17,11 @@ import { generateHTML } from "@tiptap/html";
 import type { JSX } from "@huuma/ui/jsx-runtime";
 import { ToolBar } from "./toolbar.tsx";
 
-// deno-lint-ignore no-explicit-any
-export interface EditorExtension<T extends Mark | Node = any> {
+export interface EditorExtension<
+  T extends Mark | Node | Extension = Extension,
+> {
   extension: T;
+  initOptions?: Record<string, unknown>;
   toolbarElement?: (editorRef: Ref<Tiptap | null>) => JSX.Element;
 }
 
@@ -35,9 +39,18 @@ export class Editor {
   }
 
   render(props: EditorRenderProps = {}): JSX.Element {
-    const { content = "<p>Hello</p>", "on-change": change } = props;
+    const { content = "", "on-change": change } = props;
     const elementRef = $ref<Element | null>(null);
     const editorRef = $ref<Tiptap | null>(null);
+
+    const revision$ = $signal<number>(0);
+
+    $computed(() => {
+      return {
+        changed: revision$.get() !== 0,
+        revision: revision$.get(),
+      };
+    }).get();
 
     $mount(() => {
       const element = elementRef.get;
@@ -49,14 +62,19 @@ export class Editor {
             ...this.extensions.map((extension) => extension.extension),
           ],
           content,
+          ...this.extensions.map((extension) => extension.initOptions ?? {})
+            .reduce(
+              (acc, options) => ({ ...acc, ...options }),
+              {},
+            ),
         });
 
-        if (typeof change === "function") {
-          tiptap.on("update", (event) => {
-            console.log(event.editor.getJSON());
+        tiptap.on("update", (event) => {
+          revision$.set(revision$.get() + 1);
+          if (typeof change === "function") {
             change(event.editor.getJSON());
-          });
-        }
+          }
+        });
 
         editorRef.set = tiptap;
       }
