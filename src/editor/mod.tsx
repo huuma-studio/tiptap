@@ -5,6 +5,7 @@ import type { Ref } from "@huuma/ui/ref";
 import type { Props } from "@huuma/ui";
 
 import {
+  type Content,
   type DocumentType,
   Editor as Tiptap,
   type Extension,
@@ -16,7 +17,6 @@ import { generateHTML } from "@tiptap/html";
 
 import type { JSX } from "@huuma/ui/jsx-runtime";
 import { ToolBar } from "./toolbar.tsx";
-import { Markdown } from "@tiptap/markdown";
 
 export interface EditorExtension<
   // deno-lint-ignore no-explicit-any
@@ -70,12 +70,10 @@ export class Editor {
         const tiptap = new Tiptap({
           element,
           extensions: [
-            Markdown,
             ...this.extensions.map((extension) => extension.extension),
           ],
-          content:
-            '# Markdown Test\n\nClick **"Parse Markdown"** to load content from the left panel.',
-          contentType: "markdown",
+          content,
+          ...initOptions,
         });
 
         tiptap.on("selectionUpdate", () => updateRevision());
@@ -108,7 +106,7 @@ export class Editor {
 }
 
 export interface EditorRenderProps extends Omit<Props, "children"> {
-  content?: string | DocumentType;
+  content?: Content;
   // deno-lint-ignore no-explicit-any
   "on-change"?: (content: DocumentType<any>) => void;
 }
