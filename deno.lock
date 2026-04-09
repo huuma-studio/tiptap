@@ -47,7 +47,10 @@
       ]
     },
     "@huuma/route@0.1.0": {
-      "integrity": "8cca2b4020c2798aa503899dcf932ce5245100cd367941ad3466bcacf1b6d20a"
+      "integrity": "8cca2b4020c2798aa503899dcf932ce5245100cd367941ad3466bcacf1b6d20a",
+      "dependencies": [
+        "jsr:@std/path@^1.1.1"
+      ]
     },
     "@huuma/ui@0.1.34": {
       "integrity": "2320591360976c56a2b754ba8dd751e9952637417f13b90619ed467085d16a35",
@@ -769,6 +772,7 @@
   "workspace": {
     "dependencies": [
       "jsr:@huuma/icons@~0.1.3",
+      "jsr:@huuma/route@0.1",
       "jsr:@huuma/ui@~0.1.34",
       "jsr:@std/assert@^1.0.19",
       "npm:@tiptap/core@^3.22.2",

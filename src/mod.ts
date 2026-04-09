@@ -1,5 +1,6 @@
 import type { UIApp } from "@huuma/ui/server";
 import { css } from "./util.ts";
+import type { AppContext } from "@huuma/route";
 
 const styles = css`
   .rich-text-editor {
@@ -13,6 +14,7 @@ const styles = css`
     gap: 0.25rem;
     padding: 0.25rem;
   }
+
   .rich-text-editor__toolbar__button {
     padding: 0.25rem;
     border: none;
@@ -22,18 +24,17 @@ const styles = css`
     color: var(--color-primary-700, #1f2937);
     transition: all 0.3s ease-in-out;
   }
+
   .rich-text-editor__toolbar__button--active {
     background-color: var(--color-primary-100, #e5e7eb);
   }
+
   .rich-text-editor__toolbar__button--active:active {
-    background-color: var(--color-primary-100, #e5e7eb);
     box-shadow: 0 0 0 3px var(--color-primary-200, #1f2937);
   }
-  .rich-text-editor__toolbar__button--active:active {}
 `;
 
-// deno-lint-ignore no-explicit-any
-export function registerTitap(app: UIApp<any>) {
+export function registerTitap(app: UIApp<AppContext>) {
   app.addStylesheet({
     entrypoint: true,
     name: "rich-text-editor",
