@@ -12,39 +12,44 @@ import type { Ref } from "@huuma/ui/ref";
 import type { EditorExtension } from "../editor/mod.tsx";
 import { ToolBarButton } from "../editor/toolbar.tsx";
 
-const toolbarElement = (editor: Ref<Editor | null>): JSX.Element => {
-  return (
-    <>
-      {([1, 2, 3, 4, 5, 6] as const).map((level) => (
-        <ToolBarButton
-          active={editor.get?.isActive("heading", { level })}
-          on-click={() => {
-            editor.get?.chain().focus().toggleHeading({ level }).run();
-          }}
-        >
-          {level === 1 && <Heading1Icon size={18} />}
-          {level === 2 && <Heading2Icon size={18} />}
-          {level === 3 && <Heading3Icon size={18} />}
-          {level === 4 && <Heading4Icon size={18} />}
-          {level === 5 && <Heading5Icon size={18} />}
-          {level === 6 && <Heading6Icon size={18} />}
-        </ToolBarButton>
-      ))}
-    </>
-  );
-};
+type Levels = (1 | 2 | 3 | 4 | 5 | 6)[];
+const defaultLevels: Levels = [1, 2, 3];
+
+const toolbarElement =
+  (levels: (1 | 2 | 3 | 4 | 5 | 6)[]) =>
+  (editor: Ref<Editor | null>): JSX.Element => {
+    return (
+      <>
+        {levels.map((level) => (
+          <ToolBarButton
+            active={editor.get?.isActive("heading", { level })}
+            on-click={() => {
+              editor.get?.chain().focus().toggleHeading({ level }).run();
+            }}
+          >
+            {level === 1 && <Heading1Icon size={18} />}
+            {level === 2 && <Heading2Icon size={18} />}
+            {level === 3 && <Heading3Icon size={18} />}
+            {level === 4 && <Heading4Icon size={18} />}
+            {level === 5 && <Heading5Icon size={18} />}
+            {level === 6 && <Heading6Icon size={18} />}
+          </ToolBarButton>
+        ))}
+      </>
+    );
+  };
 
 const HeadingExtension: EditorExtension<typeof Heading> & {
   configure: (
     levels: (1 | 2 | 3 | 4 | 5 | 6)[],
   ) => EditorExtension<typeof Heading>;
 } = {
-  extension: Heading.configure({ levels: [1, 2, 3] }),
-  toolbarElement,
+  extension: Heading.configure({ levels: defaultLevels }),
+  toolbarElement: toolbarElement(defaultLevels),
   configure: (levels: (1 | 2 | 3 | 4 | 5 | 6)[]) => {
     return {
       extension: Heading.configure({ levels }),
-      toolbarElement,
+      toolbarElement: toolbarElement(levels),
     };
   },
 };
