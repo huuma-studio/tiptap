@@ -10,7 +10,7 @@
     "./nodes/extension-list": "./src/nodes/extension-list.tsx",
     "./nodes/extension-heading": "./src/nodes/heading.tsx",
     "./nodes/extension-text": "./src/nodes/text.tsx",
-    "./markdown": "./src/markdown.ts"
+    "./markdown": "./src/markdown/mod.ts"
   },
   "tasks": {
     "dev": "deno test --watch"

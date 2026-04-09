@@ -4,7 +4,7 @@ export function ToolBar({ children }: Props) {
   return (
     <ul class="rich-text-editor__toolbar">
       {Array.isArray(children)
-        ? children.map((child, i) => <li key={i}>{child}</li>)
+        ? children.map((child, i) => !!child && <li key={i}>{child}</li>)
         : children}
     </ul>
   );

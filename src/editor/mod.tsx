@@ -45,6 +45,10 @@ export class Editor {
 
     const revision$ = $signal<number>(0);
 
+    function updateRevision() {
+      revision$.set(revision$.get() + 1);
+    }
+
     $computed(() => {
       return {
         changed: revision$.get() !== 0,
@@ -69,8 +73,10 @@ export class Editor {
             ),
         });
 
+        tiptap.on("selectionUpdate", () => updateRevision());
+        tiptap.on("transaction", () => updateRevision());
         tiptap.on("update", (event) => {
-          revision$.set(revision$.get() + 1);
+          updateRevision();
           if (typeof change === "function") {
             change(event.editor.getJSON());
           }
