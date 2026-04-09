@@ -18,7 +18,8 @@ import type { JSX } from "@huuma/ui/jsx-runtime";
 import { ToolBar } from "./toolbar.tsx";
 
 export interface EditorExtension<
-  T extends Mark | Node | Extension = Extension,
+  // deno-lint-ignore no-explicit-any
+  T extends Mark | Node | Extension = any,
 > {
   extension: T;
   initOptions?: Record<string, unknown>;
@@ -59,6 +60,13 @@ export class Editor {
     $mount(() => {
       const element = elementRef.get;
 
+      const initOptions = this.extensions.reduce(
+        (acc, extension) => ({ ...acc, ...extension.initOptions }),
+        {},
+      );
+
+      console.log(initOptions);
+
       if (element) {
         const tiptap = new Tiptap({
           element,
@@ -66,11 +74,7 @@ export class Editor {
             ...this.extensions.map((extension) => extension.extension),
           ],
           content,
-          ...this.extensions.map((extension) => extension.initOptions ?? {})
-            .reduce(
-              (acc, options) => ({ ...acc, ...options }),
-              {},
-            ),
+          ...initOptions,
         });
 
         tiptap.on("selectionUpdate", () => updateRevision());

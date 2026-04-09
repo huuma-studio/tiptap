@@ -1,6 +1,6 @@
 {
   "name": "@huuma/tiptap",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "exports": {
     ".": "./src/mod.ts",
     "./editor": "./src/editor/mod.tsx",
