@@ -16,6 +16,7 @@ import { generateHTML } from "@tiptap/html";
 
 import type { JSX } from "@huuma/ui/jsx-runtime";
 import { ToolBar } from "./toolbar.tsx";
+import { Markdown } from "@tiptap/markdown";
 
 export interface EditorExtension<
   // deno-lint-ignore no-explicit-any
@@ -65,16 +66,16 @@ export class Editor {
         {},
       );
 
-      console.log(initOptions);
-
       if (element) {
         const tiptap = new Tiptap({
           element,
           extensions: [
+            Markdown,
             ...this.extensions.map((extension) => extension.extension),
           ],
-          content,
-          ...initOptions,
+          content:
+            '# Markdown Test\n\nClick **"Parse Markdown"** to load content from the left panel.',
+          contentType: "markdown",
         });
 
         tiptap.on("selectionUpdate", () => updateRevision());
