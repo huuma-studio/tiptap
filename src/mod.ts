@@ -6,7 +6,8 @@ const styles = css`
   .rich-text-editor {
     width: 100%;
     background-color: white;
-    border: 1px solid var(--color-primary-100, #e5e7eb);
+    border: 1px solid var(--color-primary-100, rgb(0 0 0 / 0.1));
+    border-radius: 0.25rem;
   }
 
   .rich-text-editor__toolbar {
@@ -22,15 +23,26 @@ const styles = css`
     cursor: pointer;
     border-radius: 0.25rem;
     color: var(--color-primary-700, #1f2937);
-    transition: all 0.3s ease-in-out;
+    transition-property: background-color, box-shadow;
+    transition-duration: var(--default-transition-duration, 0.3s);
   }
 
   .rich-text-editor__toolbar__button--active {
-    background-color: var(--color-primary-100, #e5e7eb);
+    background-color: var(--color-primary-100, rgb(0 0 0 / 0.1));
   }
 
-  .rich-text-editor__toolbar__button--active:active {
-    box-shadow: 0 0 0 3px var(--color-primary-200, #1f2937);
+  .rich-text-editor__toolbar__button:active {
+    box-shadow: 0 0 0 3px var(--color-primary-200, rgb(0 0 0 / 0.2));
+  }
+
+  .tiptap {
+    padding: 0.5rem;
+  }
+
+  .tiptap:focus {
+    outline-style: solid;
+    outline-width: 3px;
+    outline-color: var(--color-primary-100, rgb(0 0 0 / 0.1));
   }
 `;
 
