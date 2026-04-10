@@ -37,6 +37,54 @@ const styles = css`
 
   .tiptap {
     padding: 0.5rem;
+    font-size: var(--text-base, 1rem);
+
+    p, ul, h1, h2, h3, h4, h5, h6 {
+      &:first-child {
+        margin-top: 0;
+      }
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-weight: bold;
+    }
+
+    h1, h2, h3 {
+      margin-top: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    h1 {
+      font-size: var(--text-2xl, 1.5rem);
+      line-height: var(--text-2xl--line-height, calc(1.75 / 1.5));
+    }
+
+    h2 {
+      font-size: var(--text-xl, 1.25rem);
+      line-height: var(--text-xl--line-height, calc(1.75 / 1.25));
+    }
+
+    h3 {
+      font-size: var(--text-lg, 1.125rem);
+      line-height: var(--text-lg--line-height, calc(1.75 / 1.125));
+    }
+
+    p, ul, h4, h5, h6 {
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    ul {
+      list-style-type: disc;
+    }
+
+    li {
+      padding-left: 1.5rem;
+    }
+
+    a {
+      text-decoration: underline;
+    }
   }
 
   .tiptap:focus {
