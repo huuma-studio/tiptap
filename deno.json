@@ -1,9 +1,8 @@
 {
   "name": "@huuma/tiptap",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "exports": {
     ".": "./src/mod.ts",
-    "./types": "./src/content.types.ts",
     "./editor": "./src/editor/mod.tsx",
     "./marks/bold": "./src/marks/bold.tsx",
     "./marks/italic": "./src/marks/italic.tsx",
