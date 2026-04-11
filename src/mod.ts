@@ -50,8 +50,8 @@ const styles = css`
     }
 
     h1, h2, h3 {
-      margin-top: 2rem;
-      margin-bottom: 1.5rem;
+      margin-top: 1rem;
+      margin-bottom: 0.75rem;
     }
 
     h1 {
@@ -70,8 +70,8 @@ const styles = css`
     }
 
     p, ul, h4, h5, h6 {
-      margin-top: 1rem;
-      margin-bottom: 1rem;
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
     }
 
     ul {

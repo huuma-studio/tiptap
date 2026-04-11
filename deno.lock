@@ -7,6 +7,7 @@
     "jsr:@huuma/route@0.1": "0.1.0",
     "jsr:@huuma/ui@~0.1.34": "0.1.34",
     "jsr:@huuma/validate@~0.1.3": "0.1.5",
+    "jsr:@huuma/validate@~0.1.5": "0.1.5",
     "jsr:@std/assert@^1.0.19": "1.0.19",
     "jsr:@std/cli@^1.0.25": "1.0.28",
     "jsr:@std/fs@^1.0.21": "1.0.23",
@@ -58,7 +59,7 @@
         "jsr:@deno/esbuild-plugin",
         "jsr:@huuma/route",
         "jsr:@huuma/ui",
-        "jsr:@huuma/validate",
+        "jsr:@huuma/validate@~0.1.3",
         "jsr:@std/cli",
         "jsr:@std/fs",
         "jsr:@std/html",
@@ -67,7 +68,10 @@
       ]
     },
     "@huuma/validate@0.1.5": {
-      "integrity": "a17ca0635b835f184122fa3ce087ffdf0e6ebf5b1090a4ad98137a2dca8508c1"
+      "integrity": "a17ca0635b835f184122fa3ce087ffdf0e6ebf5b1090a4ad98137a2dca8508c1",
+      "dependencies": [
+        "jsr:@huuma/route"
+      ]
     },
     "@std/assert@1.0.19": {
       "integrity": "eaada96ee120cb980bc47e040f82814d786fe8162ecc53c91d8df60b8755991e",
@@ -774,6 +778,7 @@
       "jsr:@huuma/icons@~0.1.3",
       "jsr:@huuma/route@0.1",
       "jsr:@huuma/ui@~0.1.34",
+      "jsr:@huuma/validate@~0.1.5",
       "jsr:@std/assert@^1.0.19",
       "npm:@tiptap/core@^3.22.2",
       "npm:@tiptap/extension-bold@^3.22.2",

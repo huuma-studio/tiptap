@@ -118,6 +118,7 @@ export class Editor {
           )}
         </ToolBar>
         <div bind={elementRef} />
+        <input hidden />
       </div>
     );
   }
@@ -133,18 +134,42 @@ export interface RichTextEditorProps {
   editable?: boolean;
   content?: Content;
   extensions: EditorExtension[];
+  inputName?: string;
+  inputId?: string;
   "on-change"?: (content: DocumentType) => void;
 }
 export function RichTextEditor(
-  { editable = false, content, "on-change": change, extensions }:
-    RichTextEditorProps,
+  {
+    editable = false,
+    content,
+    "on-change": change,
+    extensions,
+    inputName,
+    inputId,
+  }: RichTextEditorProps,
 ): JSX.Element {
+  const inputRef = $ref<HTMLInputElement | null>(null);
   const editor = new Editor(extensions);
-  return (editable ? editor.render({ "on-change": change, content }) : (
-    <div
-      dangerouslySetInnerHTML={{
-        __html: editor.toHTML(content),
-      }}
-    />
+
+  function onChange(content: DocumentType) {
+    if (inputRef.get instanceof HTMLInputElement) {
+      inputRef.get.value = editor.toHTML(content);
+    }
+    if (typeof change === "function") {
+      change(content);
+    }
+  }
+
+  return (editable ? editor.render({ "on-change": onChange, content }) : (
+    <>
+      <div
+        dangerouslySetInnerHTML={{
+          __html: editor.toHTML(content),
+        }}
+      />
+      {inputName && (
+        <input bind={inputRef} name={inputName} id={inputId} hidden />
+      )}
+    </>
   ));
 }
