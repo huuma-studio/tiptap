@@ -168,7 +168,13 @@ export function RichTextEditor(
         }}
       />
       {inputName && (
-        <input bind={inputRef} name={inputName} id={inputId} hidden />
+        <input
+          bind={inputRef}
+          value={editor.toHTML(content)}
+          name={inputName}
+          id={inputId}
+          hidden
+        />
       )}
     </>
   ));
