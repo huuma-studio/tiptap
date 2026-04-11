@@ -118,7 +118,6 @@ export class Editor {
           )}
         </ToolBar>
         <div bind={elementRef} />
-        <input hidden />
       </div>
     );
   }
@@ -160,13 +159,15 @@ export function RichTextEditor(
     }
   }
 
-  return (editable ? editor.render({ "on-change": onChange, content }) : (
+  return (
     <>
-      <div
-        dangerouslySetInnerHTML={{
-          __html: editor.toHTML(content),
-        }}
-      />
+      {editable ? editor.render({ "on-change": onChange, content }) : (
+        <div
+          dangerouslySetInnerHTML={{
+            __html: editor.toHTML(content),
+          }}
+        />
+      )}
       {inputName && (
         <input
           bind={inputRef}
@@ -177,5 +178,5 @@ export function RichTextEditor(
         />
       )}
     </>
-  ));
+  );
 }
