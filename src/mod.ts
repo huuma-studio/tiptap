@@ -1,6 +1,5 @@
-import type { UIApp } from "@huuma/ui/server";
+import type { UIApp, UIAppContext } from "@huuma/ui/server";
 import { css } from "./util.ts";
-import type { AppContext } from "@huuma/route";
 
 const styles = css`
   .rich-text-editor {
@@ -76,10 +75,7 @@ const styles = css`
 
     ul {
       list-style-type: disc;
-    }
-
-    li {
-      padding-left: 1.5rem;
+      padding-left: 1.25rem;
     }
 
     a {
@@ -94,7 +90,7 @@ const styles = css`
   }
 `;
 
-export function registerTitap(app: UIApp<AppContext>) {
+export function registerTitap(app: UIApp<UIAppContext>) {
   app.addStylesheet({
     entrypoint: true,
     name: "rich-text-editor",
