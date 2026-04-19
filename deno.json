@@ -1,6 +1,7 @@
 {
   "name": "@huuma/tiptap",
-  "version": "0.1.19",
+  "version": "0.1.20",
+  "description": "Rich text editor built on Tiptap for @huuma/ui applications",
   "exports": {
     ".": "./src/mod.ts",
     "./editor": "./src/editor/mod.tsx",

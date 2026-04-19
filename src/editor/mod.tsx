@@ -18,6 +18,7 @@ import {
   type DocumentType,
   Editor as Tiptap,
   type Extension,
+  type Extensions,
   type Mark,
   type Node,
 } from "@tiptap/core";
@@ -29,8 +30,7 @@ import { ToolBar } from "./toolbar.tsx";
 
 /** Describes a Tiptap extension together with its optional toolbar UI. */
 export interface EditorExtension<
-  // deno-lint-ignore no-explicit-any
-  T extends Mark | Node | Extension = any,
+  T extends Mark | Node | Extension,
 > {
   /** The underlying Tiptap extension, mark, or node. */
   extension: T;
@@ -45,13 +45,13 @@ export interface EditorExtension<
  * and HTML serialisation.
  */
 export class Editor {
-  #extensions: (Mark | Node | Extension)[];
+  #extensions: Extensions;
   #initOptions: Record<string, unknown>;
   #toolbarElements: ((editorRef: Ref<Tiptap | null>) => JSX.Element)[] = [];
 
   /** Creates an editor instance from the given set of extensions. */
-  constructor(extensions: EditorExtension[]) {
-    this.#extensions = [...extensions.map((extension) => extension.extension)];
+  constructor(extensions: EditorExtension<Mark | Extension | Node>[]) {
+    this.#extensions = [...extensions.map((ext) => ext.extension)];
     this.#initOptions = {
       ...extensions.reduce(
         (acc, extension) => ({ ...acc, ...extension.initOptions }),
@@ -130,13 +130,13 @@ export class Editor {
       };
     });
 
+    const toolbarElements = this.#toolbarElements.map((toolbarElement) =>
+      toolbarElement(editorRef)
+    );
+
     return (
       <div class="rich-text-editor">
-        <ToolBar>
-          {this.#toolbarElements.map((toolbarElement) =>
-            toolbarElement(editorRef)
-          )}
-        </ToolBar>
+        {!!toolbarElements?.length && <ToolBar>{toolbarElements}</ToolBar>}
         <div bind={elementRef} />
       </div>
     );
@@ -159,7 +159,7 @@ export interface RichTextEditorProps {
   /** Initial content for the editor. */
   content?: Content;
   /** Extensions to enable in the editor. */
-  extensions: EditorExtension[];
+  extensions: EditorExtension<Mark | Node | Extension>[];
   /** Name attribute for the hidden `<input>` that holds the serialised HTML. */
   inputName?: string;
   /** Id attribute for the hidden `<input>`. */
