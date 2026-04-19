@@ -1,3 +1,12 @@
+/**
+ * Validation schema for Tiptap document JSON.
+ *
+ * Integrates with `@huuma/validate` so Tiptap documents can be validated using
+ * the same schema API as other form fields.
+ *
+ * @module
+ */
+
 import {
   type DocumentType,
   type Extension,
@@ -18,6 +27,10 @@ interface TipTapDocumentSchemaProperty extends Property {
   extensions: (Mark | Node | Extension)[];
 }
 
+/**
+ * A `@huuma/validate` schema that validates Tiptap {@linkcode DocumentType} JSON
+ * against the Tiptap schema derived from the provided extensions.
+ */
 export class TipTapDocumentSchema extends BaseSchema<DocumentType> {
   #extensions: (Mark | Node | Extension)[];
   constructor(
@@ -38,6 +51,7 @@ export class TipTapDocumentSchema extends BaseSchema<DocumentType> {
     super("unknown", jsonSchema, property);
     this.#extensions = extensions;
   }
+  /** Validates `value` against the Tiptap schema and returns the normalised document or errors. */
   validate(value: DocumentType): Validation<DocumentType> {
     const schema = getSchema(this.#extensions);
     try {

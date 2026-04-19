@@ -1,3 +1,13 @@
+/**
+ * Heading node extension for the rich text editor.
+ *
+ * Supports heading levels 1–6 with per-level toolbar buttons.
+ * The default export can be used as-is (levels 1–3) or configured via
+ * `HeadingExtension.configure([1, 2])`.
+ *
+ * @module
+ */
+
 import Heading1Icon from "@huuma/icons/lucide/heading-1";
 import Heading2Icon from "@huuma/icons/lucide/heading-2";
 import Heading3Icon from "@huuma/icons/lucide/heading-3";
@@ -39,6 +49,12 @@ const toolbarElement =
     );
   };
 
+/**
+ * Tiptap heading node with toolbar buttons for each enabled level.
+ *
+ * Use `HeadingExtension.configure([1, 2])` to customise which heading levels
+ * are available.
+ */
 const HeadingExtension: EditorExtension<typeof Heading> & {
   configure: (
     levels: (1 | 2 | 3 | 4 | 5 | 6)[],

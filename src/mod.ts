@@ -1,3 +1,12 @@
+/**
+ * Core module for the `@huuma/tiptap` rich text editor package.
+ *
+ * Provides {@linkcode registerTitap} to register the editor's global stylesheet
+ * with a `@huuma/ui` application.
+ *
+ * @module
+ */
+
 import type { UIApp, UIAppContext } from "@huuma/ui/server";
 import { css } from "./util.ts";
 
@@ -90,6 +99,7 @@ const styles = css`
   }
 `;
 
+/** Registers the rich text editor stylesheet with the given `@huuma/ui` application. */
 export function registerTitap(app: UIApp<UIAppContext>) {
   app.addStylesheet({
     entrypoint: true,

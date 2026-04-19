@@ -1,3 +1,12 @@
+/**
+ * Rich text editor built on top of [Tiptap](https://tiptap.dev/).
+ *
+ * Exports the {@linkcode Editor} class for programmatic usage and the
+ * {@linkcode RichTextEditor} component for declarative rendering.
+ *
+ * @module
+ */
+
 import { $mount } from "@huuma/ui/hooks/lifecycle";
 import { $computed, $signal } from "@huuma/ui/hooks/signal";
 import { $ref } from "@huuma/ui/hooks/ref";
@@ -18,20 +27,29 @@ import { generateHTML, generateJSON } from "@tiptap/html";
 import type { JSX } from "@huuma/ui/jsx-runtime";
 import { ToolBar } from "./toolbar.tsx";
 
+/** Describes a Tiptap extension together with its optional toolbar UI. */
 export interface EditorExtension<
   // deno-lint-ignore no-explicit-any
   T extends Mark | Node | Extension = any,
 > {
+  /** The underlying Tiptap extension, mark, or node. */
   extension: T;
+  /** Extra options forwarded to the Tiptap editor on initialisation. */
   initOptions?: Record<string, unknown>;
+  /** Returns a toolbar element rendered inside the editor toolbar. */
   toolbarElement?: (editorRef: Ref<Tiptap | null>) => JSX.Element;
 }
 
+/**
+ * Wrapper around the Tiptap editor that manages extensions, toolbar elements,
+ * and HTML serialisation.
+ */
 export class Editor {
   #extensions: (Mark | Node | Extension)[];
   #initOptions: Record<string, unknown>;
   #toolbarElements: ((editorRef: Ref<Tiptap | null>) => JSX.Element)[] = [];
 
+  /** Creates an editor instance from the given set of extensions. */
   constructor(extensions: EditorExtension[]) {
     this.#extensions = [...extensions.map((extension) => extension.extension)];
     this.#initOptions = {
@@ -47,6 +65,7 @@ export class Editor {
     });
   }
 
+  /** Converts editor content (JSON or string) to an HTML string. */
   toHTML(content?: Content): string {
     if (!content) {
       return "";
@@ -63,6 +82,7 @@ export class Editor {
     ]);
   }
 
+  /** Renders the editor with its toolbar as a JSX element. */
   render(props: EditorRenderProps = {}): JSX.Element {
     const { content = "", "on-change": change } = props;
     const elementRef = $ref<Element | null>(null);
@@ -123,20 +143,38 @@ export class Editor {
   }
 }
 
+/** Props accepted by {@linkcode Editor.render}. */
 export interface EditorRenderProps extends Omit<Props, "children"> {
+  /** Initial content to populate the editor with. */
   content?: Content;
+  /** Callback fired whenever the editor content changes. */
   // deno-lint-ignore no-explicit-any
   "on-change"?: (content: DocumentType<any>) => void;
 }
 
+/** Props accepted by {@linkcode RichTextEditor}. */
 export interface RichTextEditorProps {
+  /** When `true` the editor is interactive; otherwise content is rendered as static HTML. */
   editable?: boolean;
+  /** Initial content for the editor. */
   content?: Content;
+  /** Extensions to enable in the editor. */
   extensions: EditorExtension[];
+  /** Name attribute for the hidden `<input>` that holds the serialised HTML. */
   inputName?: string;
+  /** Id attribute for the hidden `<input>`. */
   inputId?: string;
+  /** Callback fired whenever the editor content changes. */
   "on-change"?: (content: DocumentType) => void;
 }
+
+/**
+ * A ready-to-use rich text editor component.
+ *
+ * Renders an interactive Tiptap editor when `editable` is `true`, or static
+ * HTML otherwise. An optional hidden `<input>` is rendered when `inputName` is
+ * provided so the serialised HTML can be submitted with a form.
+ */
 export function RichTextEditor(
   {
     editable = false,

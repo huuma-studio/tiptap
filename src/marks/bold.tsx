@@ -1,8 +1,15 @@
+/**
+ * Bold mark extension for the rich text editor.
+ *
+ * @module
+ */
+
 import Bold from "@tiptap/extension-bold";
 import type { EditorExtension } from "../editor/mod.tsx";
 import { ToolBarButton } from "../editor/toolbar.tsx";
 import BoldIcon from "@huuma/icons/lucide/bold";
 
+/** Tiptap bold mark with a toolbar toggle button. */
 const BoldExtension: EditorExtension<typeof Bold> = {
   extension: Bold,
   toolbarElement: (

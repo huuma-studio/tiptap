@@ -1,8 +1,17 @@
+/**
+ * Link mark extension for the rich text editor.
+ *
+ * Links open in a new tab with `rel="noopener noreferrer"` by default.
+ *
+ * @module
+ */
+
 import Link from "@tiptap/extension-link";
 import type { EditorExtension } from "../editor/mod.tsx";
 import { ToolBarButton } from "../editor/toolbar.tsx";
 import LinkIcon from "@huuma/icons/lucide/link";
 
+/** Tiptap link mark with a toolbar toggle button that prompts for a URL. */
 const LinkExtension: EditorExtension<typeof Link> = {
   extension: Link.configure({
     openOnClick: false,
