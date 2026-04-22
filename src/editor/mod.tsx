@@ -19,6 +19,7 @@ import {
   Editor as Tiptap,
   type Extension,
   type Extensions,
+  type JSONContent,
   type Mark,
   type Node,
 } from "@tiptap/core";
@@ -65,6 +66,60 @@ export class Editor {
     });
   }
 
+  /**
+   * Generates HTML from JSON content using the provided extensions.
+   *
+   * This is useful when you need to serialize editor content to HTML
+   * without creating an editor instance.
+   *
+   * @param content - The JSON content to convert to HTML.
+   * @param extensions - The Tiptap extensions to use for rendering.
+   * @returns An HTML string representation of the content.
+   *
+   * @example
+   * ```ts
+   * import { Editor } from "@huuma/tiptap";
+   * import StarterKit from "@tiptap/starter-kit";
+   *
+   * const html = Editor.generateHTML(
+   *   { type: "doc", content: [{ type: "paragraph", content: [{ type: "text", text: "Hello World" }] }] },
+   *   [StarterKit]
+   * );
+   * console.log(html); // "<p>Hello World</p>"
+   * ```
+   */
+  static generateHTML(content: JSONContent, extensions: Extensions): string {
+    return generateHTML(content, [
+      ...extensions,
+    ]);
+  }
+
+  /**
+   * Parses HTML content into JSON using the provided extensions.
+   *
+   * This is useful when you need to convert HTML to Tiptap's JSON format
+   * without creating an editor instance.
+   *
+   * @param content - The HTML string to parse into JSON.
+   * @param extensions - The Tiptap extensions to use for parsing.
+   * @returns A JSONContent object representing the parsed content.
+   *
+   * @example
+   * ```ts
+   * import { Editor } from "@huuma/tiptap";
+   * import StarterKit from "@tiptap/starter-kit";
+   *
+   * const json = Editor.generateJSON("<p>Hello World</p>", [StarterKit]);
+   * console.log(json);
+   * // { type: "doc", content: [{ type: "paragraph", content: [{ type: "text", text: "Hello World" }] }] }
+   * ```
+   */
+  static generateJSON(content: string, extensions: Extensions): JSONContent {
+    return generateJSON(content, [
+      ...extensions,
+    ]);
+  }
+
   /** Converts editor content (JSON or string) to an HTML string. */
   toHTML(content?: Content): string {
     if (!content) {
@@ -72,12 +127,12 @@ export class Editor {
     }
 
     if (typeof content === "string") {
-      content = generateJSON(content, [
+      content = Editor.generateJSON(content, [
         ...this.#extensions,
       ]);
     }
 
-    return generateHTML(content, [
+    return Editor.generateHTML(content, [
       ...this.#extensions,
     ]);
   }
