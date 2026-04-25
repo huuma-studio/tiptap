@@ -241,15 +241,21 @@ export function RichTextEditor(
   }: RichTextEditorProps,
 ): JSX.Element {
   const inputRef = $ref<HTMLInputElement | null>(null);
-  const editor = new Editor(extensions);
+  const editor$ = $signal(new Editor(extensions));
+  const editor = editor$.get();
+
+  console.log("new render rich text editor editor");
 
   function onChange(content: DocumentType) {
     const htmlContent = editor.toHTML(content);
+
     console.log("JSON", content);
     console.log("HTML Action", htmlContent);
     console.log("Element", inputRef.get);
+
     if (inputRef.get instanceof HTMLInputElement) {
-      inputRef.get.value = editor.toHTML(content);
+      inputRef.get.value = htmlContent;
+      console.log("Current Value", inputRef.get.value);
     }
     if (typeof change === "function") {
       change(content);
