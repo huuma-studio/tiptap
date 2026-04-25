@@ -244,6 +244,10 @@ export function RichTextEditor(
   const editor = new Editor(extensions);
 
   function onChange(content: DocumentType) {
+    const htmlContent = editor.toHTML(content);
+    console.log("JSON", content);
+    console.log("HTML Action", htmlContent);
+    console.log("Element", inputRef.get);
     if (inputRef.get instanceof HTMLInputElement) {
       inputRef.get.value = editor.toHTML(content);
     }
