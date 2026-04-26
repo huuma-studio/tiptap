@@ -138,9 +138,12 @@ export class Editor {
   }
 
   /** Renders the editor with its toolbar as a JSX element. */
-  render(props: EditorRenderProps = {}): JSX.Element {
-    const { content = "", "on-change": change } = props;
+  render(
+    { content = "", "on-change": change, inputName, inputId }:
+      EditorRenderProps = {},
+  ): JSX.Element {
     const elementRef = $ref<Element | null>(null);
+    const inputRef = $ref<HTMLInputElement | null>(null);
     const editorRef = $ref<Tiptap | null>(null);
 
     const revision$ = $signal<number>(0);
@@ -149,10 +152,11 @@ export class Editor {
       revision$.set(revision$.get() + 1);
     }
 
-    $computed(() => {
+    const { htmlContent } = $computed(() => {
       return {
         changed: revision$.get() !== 0,
         revision: revision$.get(),
+        htmlContent: editorRef.get?.getHTML() || this.toHTML(content),
       };
     }).get();
 
@@ -173,6 +177,11 @@ export class Editor {
         tiptap.on("transaction", () => updateRevision());
         tiptap.on("update", (event) => {
           updateRevision();
+
+          if (inputRef.get instanceof HTMLInputElement) {
+            inputRef.get.value = this.toHTML(event.editor.getHTML());
+          }
+
           if (typeof change === "function") {
             change(event.editor.getJSON());
           }
@@ -193,6 +202,15 @@ export class Editor {
       <div class="rich-text-editor">
         {!!toolbarElements?.length && <ToolBar>{toolbarElements}</ToolBar>}
         <div bind={elementRef} />
+        {inputName && (
+          <input
+            bind={inputRef}
+            value={htmlContent}
+            name={inputName}
+            id={inputId}
+            hidden
+          />
+        )}
       </div>
     );
   }
@@ -202,6 +220,10 @@ export class Editor {
 export interface EditorRenderProps extends Omit<Props, "children"> {
   /** Initial content to populate the editor with. */
   content?: Content;
+  /** Name attribute for the hidden `<input>` that holds the serialised HTML. */
+  inputName?: string;
+  /** Id attribute for the hidden `<input>`. that holds the serialised HTML.*/
+  inputId?: string;
   /** Callback fired whenever the editor content changes. */
   // deno-lint-ignore no-explicit-any
   "on-change"?: (content: DocumentType<any>) => void;
@@ -240,46 +262,38 @@ export function RichTextEditor(
     inputId,
   }: RichTextEditorProps,
 ): JSX.Element {
-  const inputRef = $ref<HTMLInputElement | null>(null);
-  const editor$ = $signal(new Editor(extensions));
-  const editor = editor$.get();
-
-  console.log("new render rich text editor editor");
-
-  function onChange(content: DocumentType) {
-    const htmlContent = editor.toHTML(content);
-
-    console.log("JSON", content);
-    console.log("HTML Action", htmlContent);
-    console.log("Element", inputRef.get);
-
-    if (inputRef.get instanceof HTMLInputElement) {
-      inputRef.get.value = htmlContent;
-      console.log("Current Value", inputRef.get.value);
-    }
-    if (typeof change === "function") {
-      change(content);
-    }
-  }
+  const editorRef = $ref(new Editor(extensions));
 
   return (
     <>
-      {editable ? editor.render({ "on-change": onChange, content }) : (
-        <div
-          dangerouslySetInnerHTML={{
-            __html: editor.toHTML(content),
-          }}
-        />
-      )}
-      {inputName && (
-        <input
-          bind={inputRef}
-          value={editor.toHTML(content)}
-          name={inputName}
-          id={inputId}
-          hidden
-        />
-      )}
+      {editable
+        /*"editor.render()" not called as JSX Component" so signals based reactivity
+         * is delegated to this "<RichTextEditor>" component
+         */
+        ? editorRef.get.render({
+          "on-change": change,
+          content,
+          inputId,
+          inputName,
+        })
+        : (
+          <>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: editorRef.get.toHTML(content),
+              }}
+            />
+            {(inputName || inputId) &&
+              (
+                <input
+                  type="hidden"
+                  name={inputName}
+                  id={inputId}
+                  value={editorRef.get.toHTML(content)}
+                />
+              )}
+          </>
+        )}
     </>
   );
 }
