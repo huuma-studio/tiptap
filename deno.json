@@ -1,6 +1,6 @@
 {
   "name": "@huuma/tiptap",
-  "version": "0.1.28",
+  "version": "0.2.0",
   "description": "Rich text editor built on Tiptap for @huuma/ui applications",
   "exports": {
     ".": "./src/mod.ts",
@@ -20,26 +20,27 @@
   "license": "MIT",
   "imports": {
     "@huuma/icons": "jsr:@huuma/icons@^0.1.5",
-    "@huuma/route": "jsr:@huuma/route@^0.1.1",
-    "@huuma/ui": "jsr:@huuma/ui@^0.2.2",
-    "@huuma/validate": "jsr:@huuma/validate@^0.1.5",
+    "@huuma/route": "jsr:@huuma/route@^0.2.0",
+    "@huuma/ui": "jsr:@huuma/ui@^0.2.8",
+    "@huuma/validate": "jsr:@huuma/validate@^0.2.1",
     "@std/assert": "jsr:@std/assert@^1.0.19",
-    "@tiptap/core": "npm:@tiptap/core@^3.26.1",
-    "@tiptap/extension-bold": "npm:@tiptap/extension-bold@^3.26.1",
-    "@tiptap/extension-document": "npm:@tiptap/extension-document@^3.26.1",
-    "@tiptap/extension-heading": "npm:@tiptap/extension-heading@^3.26.1",
-    "@tiptap/extension-italic": "npm:@tiptap/extension-italic@^3.26.1",
-    "@tiptap/extension-link": "npm:@tiptap/extension-link@^3.26.1",
-    "@tiptap/extension-list": "npm:@tiptap/extension-list@^3.26.1",
-    "@tiptap/extension-paragraph": "npm:@tiptap/extension-paragraph@^3.26.1",
-    "@tiptap/extension-text": "npm:@tiptap/extension-text@^3.26.1",
-    "@tiptap/html": "npm:@tiptap/html@^3.26.1",
-    "@tiptap/markdown": "npm:@tiptap/markdown@^3.26.1",
-    "@tiptap/pm": "npm:@tiptap/pm@^3.26.1"
+    "@tiptap/core": "npm:@tiptap/core@^3.28.0",
+    "@tiptap/extension-bold": "npm:@tiptap/extension-bold@^3.28.0",
+    "@tiptap/extension-document": "npm:@tiptap/extension-document@^3.28.0",
+    "@tiptap/extension-heading": "npm:@tiptap/extension-heading@^3.28.0",
+    "@tiptap/extension-italic": "npm:@tiptap/extension-italic@^3.28.0",
+    "@tiptap/extension-link": "npm:@tiptap/extension-link@^3.28.0",
+    "@tiptap/extension-list": "npm:@tiptap/extension-list@^3.28.0",
+    "@tiptap/extension-paragraph": "npm:@tiptap/extension-paragraph@^3.28.0",
+    "@tiptap/extension-text": "npm:@tiptap/extension-text@^3.28.0",
+    "@tiptap/html": "npm:@tiptap/html@^3.28.0",
+    "@tiptap/markdown": "npm:@tiptap/markdown@^3.28.0",
+    "@tiptap/pm": "npm:@tiptap/pm@^3.28.0"
   },
   "compilerOptions": {
     "jsx": "precompile",
     "jsxImportSource": "@huuma/ui",
     "lib": ["dom", "dom.iterable", "dom.asynciterable", "deno.ns"]
-  }
+  },
+  "minimumDependencyAge": "0"
 }
