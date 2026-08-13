@@ -17,7 +17,8 @@
     "./schema": "./src/schema/mod.ts"
   },
   "tasks": {
-    "dev": "deno test --watch"
+    "dev": "deno test --watch --allow-env=NODE_ENV",
+    "test": "deno test --allow-env=NODE_ENV"
   },
   "license": "MIT",
   "imports": {
