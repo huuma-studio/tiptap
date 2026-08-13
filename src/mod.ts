@@ -111,6 +111,30 @@ const styles = css`
         border-radius: 0;
       }
     }
+
+    table {
+      border-collapse: collapse;
+      table-layout: fixed;
+      width: 100%;
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+      overflow: hidden;
+    }
+
+    th, td {
+      border: 1px solid var(--color-primary-100, rgb(0 0 0 / 0.1));
+      padding: 0.375rem 0.5rem;
+      vertical-align: top;
+    }
+
+    th {
+      font-weight: bold;
+      background-color: color-mix(in srgb, var(--color-primary-100, rgb(0 0 0 / 0.1)) 40%, transparent);
+    }
+
+    td {
+      font-weight: normal;
+    }
   }
 
   .tiptap:focus {

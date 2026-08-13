@@ -40,6 +40,7 @@ registerTitap(app);
   via `HeadingExtension.configure([1, 2])`)
 - `@huuma/tiptap/nodes/extension-list` — Bullet list and list item
 - `@huuma/tiptap/nodes/code-block` — Fenced code blocks
+- `@huuma/tiptap/nodes/table` — Table, table row, table cell, and table header
 
 ### Marks
 
