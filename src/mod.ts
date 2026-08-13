@@ -90,6 +90,27 @@ const styles = css`
     a {
       text-decoration: underline;
     }
+
+    code {
+      font-family: var(--font-mono, ui-monospace, monospace);
+      background-color: var(--color-primary-100, rgb(0 0 0 / 0.07));
+      padding: 0.125rem 0.25rem;
+      border-radius: 0.25rem;
+    }
+
+    pre {
+      font-family: var(--font-mono, ui-monospace, monospace);
+      background-color: var(--color-primary-200, rgb(0 0 0 / 0.9));
+      padding: 0.75rem;
+      border-radius: 0.25rem;
+      overflow-x: auto;
+
+      code {
+        background-color: transparent;
+        padding: 0;
+        border-radius: 0;
+      }
+    }
   }
 
   .tiptap:focus {
