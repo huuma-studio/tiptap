@@ -39,12 +39,14 @@ registerTitap(app);
 - `@huuma/tiptap/nodes/heading` — Headings (levels 1–3 by default, configurable
   via `HeadingExtension.configure([1, 2])`)
 - `@huuma/tiptap/nodes/extension-list` — Bullet list and list item
+- `@huuma/tiptap/nodes/code-block` — Fenced code blocks
 
 ### Marks
 
 - `@huuma/tiptap/marks/bold` — Bold
 - `@huuma/tiptap/marks/italic` — Italic
 - `@huuma/tiptap/marks/link` — Link
+- `@huuma/tiptap/marks/code` — Inline code
 
 ### Other
 
