@@ -13,9 +13,16 @@ import { css } from "./util.ts";
 const styles = css`
   .rich-text-editor {
     width: 100%;
-    background-color: white;
+    background-color: var(--rich-text-editor-bg-color, white);
     border: 1px solid var(--color-primary-100, rgb(0 0 0 / 0.1));
     border-radius: 0.25rem;
+  }
+
+  /* Opt-in dark mode via the Tailwind class convention: only apps that toggle
+     a "dark" class on an ancestor match. :where adds no specificity, so
+     app-level overrides always win regardless of stylesheet order. */
+  .rich-text-editor:where(.dark, .dark *) {
+    background-color: var(--rich-text-editor-bg-color, rgb(20 24 29));
   }
 
   .rich-text-editor__toolbar {
