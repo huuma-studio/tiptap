@@ -31,6 +31,28 @@ registerTitap(app);
 />;
 ```
 
+## Theming
+
+The registered stylesheet is token-driven: toolbar buttons, active states, code,
+tables, borders, and the focus outline all read `--color-primary-*` design
+tokens (with light-mode fallbacks), so apps that define those tokens re-theme
+the editor automatically.
+
+Dark mode is opt-in via the Tailwind class convention: apps that toggle a `dark`
+class on `<html>` (or any ancestor of the editor) get a dark editor surface
+(`rgb(20 24 29)`) automatically. The dark rule is wrapped in
+`:where(.dark, .dark *)`, which contributes no specificity, so app-level
+overrides (e.g. `.dark .rich-text-editor { … }`) always win. Apps without a
+`dark` class keep the original white surface.
+
+To customize the editor surface in either mode, set a single CSS variable:
+
+```css
+:root {
+  --rich-text-editor-bg-color: var(--color-gray-50);
+}
+```
+
 ## Extensions
 
 ### Nodes
