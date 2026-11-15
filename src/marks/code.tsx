@@ -1,3 +1,4 @@
+/** @jsxImportSource @huuma/ui */
 /**
  * Inline code mark extension for the rich text editor.
  *
@@ -12,9 +13,7 @@ import CodeIcon from "@huuma/icons/lucide/code";
 /** Tiptap inline code mark with a toolbar toggle button. */
 const CodeExtension: EditorExtension<typeof Code> = {
   extension: Code,
-  toolbarElement: (
-    editor,
-  ) => {
+  toolbarElement: (editor) => {
     return (
       <ToolBarButton
         active={editor.get?.isActive("code")}

@@ -1,3 +1,4 @@
+/** @jsxImportSource @huuma/ui */
 /**
  * Table node extensions for the rich text editor.
  *
@@ -25,11 +26,15 @@ export const TableExtension: EditorExtension<typeof Table> = {
       <ToolBarButton
         active={editor.get?.isActive("table")}
         on-click={() => {
-          editor.get?.chain().focus().insertTable({
-            rows: 3,
-            cols: 3,
-            withHeaderRow: true,
-          }).run();
+          editor.get
+            ?.chain()
+            .focus()
+            .insertTable({
+              rows: 3,
+              cols: 3,
+              withHeaderRow: true,
+            })
+            .run();
         }}
       >
         <TableIcon size={18} />
@@ -53,9 +58,4 @@ export const TableHeaderExtension: EditorExtension<typeof TableHeader> = {
   extension: TableHeader,
 };
 
-export default [
-  TableExtension,
-  TableRowExtension,
-  TableCellExtension,
-  TableHeaderExtension,
-];
+export default [TableExtension, TableRowExtension, TableCellExtension, TableHeaderExtension];

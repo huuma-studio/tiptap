@@ -1,3 +1,4 @@
+/** @jsxImportSource @huuma/ui */
 /**
  * Rich text editor built on top of [Tiptap](https://tiptap.dev/).
  *
@@ -30,9 +31,7 @@ import type { JSX } from "@huuma/ui/jsx-runtime";
 import { ToolBar } from "./toolbar.tsx";
 
 /** Describes a Tiptap extension together with its optional toolbar UI. */
-export interface EditorExtension<
-  T extends Mark | Node | Extension,
-> {
+export interface EditorExtension<T extends Mark | Node | Extension> {
   /** The underlying Tiptap extension, mark, or node. */
   extension: T;
   /** Extra options forwarded to the Tiptap editor on initialisation. */
@@ -52,13 +51,11 @@ export class Editor {
 
   /** Creates an editor instance from the given set of extensions. */
   constructor(extensions: EditorExtension<Mark | Extension | Node>[]) {
-    this.#extensions = [...extensions.map((ext) => ext.extension)];
-    this.#initOptions = {
-      ...extensions.reduce(
-        (acc, extension) => ({ ...acc, ...extension.initOptions }),
-        {},
-      ),
-    };
+    this.#extensions = extensions.map((ext) => ext.extension);
+    this.#initOptions = extensions.reduce(
+      (acc, extension) => ({ ...acc, ...extension.initOptions }),
+      {},
+    );
     extensions.forEach((extension) => {
       if (extension.toolbarElement) {
         this.#toolbarElements.push(extension.toolbarElement);
@@ -89,9 +86,7 @@ export class Editor {
    * ```
    */
   static generateHTML(content: JSONContent, extensions: Extensions): string {
-    return generateHTML(content, [
-      ...extensions,
-    ]);
+    return generateHTML(content, [...extensions]);
   }
 
   /**
@@ -115,9 +110,7 @@ export class Editor {
    * ```
    */
   static generateJSON(content: string, extensions: Extensions): JSONContent {
-    return generateJSON(content, [
-      ...extensions,
-    ]);
+    return generateJSON(content, [...extensions]);
   }
 
   /** Converts editor content (JSON or string) to an HTML string. */
@@ -127,21 +120,19 @@ export class Editor {
     }
 
     if (typeof content === "string") {
-      content = Editor.generateJSON(content, [
-        ...this.#extensions,
-      ]);
+      content = Editor.generateJSON(content, [...this.#extensions]);
     }
 
-    return Editor.generateHTML(content, [
-      ...this.#extensions,
-    ]);
+    return Editor.generateHTML(content, [...this.#extensions]);
   }
 
   /** Renders the editor with its toolbar as a JSX element. */
-  render(
-    { content = "", "on-change": change, inputName, inputId }:
-      EditorRenderProps = {},
-  ): JSX.Element {
+  render({
+    content = "",
+    "on-change": change,
+    inputName,
+    inputId,
+  }: EditorRenderProps = {}): JSX.Element {
     const elementRef = $ref<Element | null>(null);
     const inputRef = $ref<HTMLInputElement | null>(null);
     const editorRef = $ref<Tiptap | null>(null);
@@ -166,9 +157,7 @@ export class Editor {
       if (element) {
         const tiptap = new Tiptap({
           element,
-          extensions: [
-            ...this.#extensions,
-          ],
+          extensions: [...this.#extensions],
           content,
           ...this.#initOptions,
         });
@@ -195,7 +184,7 @@ export class Editor {
     });
 
     const toolbarElements = this.#toolbarElements.map((toolbarElement) =>
-      toolbarElement(editorRef)
+      toolbarElement(editorRef),
     );
 
     return (
@@ -203,13 +192,7 @@ export class Editor {
         {!!toolbarElements?.length && <ToolBar>{toolbarElements}</ToolBar>}
         <div bind={elementRef} />
         {inputName && (
-          <input
-            bind={inputRef}
-            value={htmlContent}
-            name={inputName}
-            id={inputId}
-            hidden
-          />
+          <input bind={inputRef} value={htmlContent} name={inputName} id={inputId} hidden />
         )}
       </div>
     );
@@ -252,48 +235,45 @@ export interface RichTextEditorProps {
  * HTML otherwise. An optional hidden `<input>` is rendered when `inputName` is
  * provided so the serialised HTML can be submitted with a form.
  */
-export function RichTextEditor(
-  {
-    editable = false,
-    content,
-    "on-change": change,
-    extensions,
-    inputName,
-    inputId,
-  }: RichTextEditorProps,
-): JSX.Element {
+export function RichTextEditor({
+  editable = false,
+  content,
+  "on-change": change,
+  extensions,
+  inputName,
+  inputId,
+}: RichTextEditorProps): JSX.Element {
   const editorRef = $ref(new Editor(extensions));
 
   return (
     <>
-      {editable
+      {editable ? (
         /*"editor.render()" not called as JSX Component" so signals based reactivity
          * is delegated to this "<RichTextEditor>" component
          */
-        ? editorRef.get.render({
+        editorRef.get.render({
           "on-change": change,
           content,
           inputId,
           inputName,
         })
-        : (
-          <>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: editorRef.get.toHTML(content),
-              }}
+      ) : (
+        <>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: editorRef.get.toHTML(content),
+            }}
+          />
+          {(inputName || inputId) && (
+            <input
+              type="hidden"
+              name={inputName}
+              id={inputId}
+              value={editorRef.get.toHTML(content)}
             />
-            {(inputName || inputId) &&
-              (
-                <input
-                  type="hidden"
-                  name={inputName}
-                  id={inputId}
-                  value={editorRef.get.toHTML(content)}
-                />
-              )}
-          </>
-        )}
+          )}
+        </>
+      )}
     </>
   );
 }

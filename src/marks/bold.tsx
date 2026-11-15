@@ -1,3 +1,4 @@
+/** @jsxImportSource @huuma/ui */
 /**
  * Bold mark extension for the rich text editor.
  *
@@ -12,9 +13,7 @@ import BoldIcon from "@huuma/icons/lucide/bold";
 /** Tiptap bold mark with a toolbar toggle button. */
 const BoldExtension: EditorExtension<typeof Bold> = {
   extension: Bold,
-  toolbarElement: (
-    editor,
-  ) => {
+  toolbarElement: (editor) => {
     return (
       <ToolBarButton
         active={editor.get?.isActive("bold")}

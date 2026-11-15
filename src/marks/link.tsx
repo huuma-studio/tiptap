@@ -1,3 +1,4 @@
+/** @jsxImportSource @huuma/ui */
 /**
  * Link mark extension for the rich text editor.
  *
@@ -20,9 +21,7 @@ const LinkExtension: EditorExtension<typeof Link> = {
       target: "_blank",
     },
   }),
-  toolbarElement: (
-    editor,
-  ) => {
+  toolbarElement: (editor) => {
     return (
       <ToolBarButton
         active={editor.get?.isActive("link")}

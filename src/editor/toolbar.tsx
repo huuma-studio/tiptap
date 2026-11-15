@@ -1,3 +1,4 @@
+/** @jsxImportSource @huuma/ui */
 import type { Props } from "@huuma/ui";
 
 export function ToolBar({ children }: Props) {
@@ -14,9 +15,7 @@ interface ToolBarButtonProps extends Props {
   active?: boolean;
   "on-click": () => void;
 }
-export function ToolBarButton(
-  { children, active = false, "on-click": click }: ToolBarButtonProps,
-) {
+export function ToolBarButton({ children, active = false, "on-click": click }: ToolBarButtonProps) {
   return (
     <button
       type="button"

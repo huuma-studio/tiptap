@@ -1,3 +1,4 @@
+/** @jsxImportSource @huuma/ui */
 /**
  * List node extensions for the rich text editor.
  *
@@ -21,8 +22,7 @@ export const BulletListExtension: EditorExtension<typeof BulletList> = {
       <ToolBarButton
         active={editor.get?.isActive("bulletList")}
         on-click={() => {
-          editor.get?.chain().focus().toggleBulletList()
-            .run();
+          editor.get?.chain().focus().toggleBulletList().run();
         }}
       >
         <ListIcon size={18} />

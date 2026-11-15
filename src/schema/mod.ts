@@ -7,13 +7,7 @@
  * @module
  */
 
-import {
-  type DocumentType,
-  type Extension,
-  getSchema,
-  type Mark,
-  type Node,
-} from "@tiptap/core";
+import { type DocumentType, type Extension, getSchema, type Mark, type Node } from "@tiptap/core";
 import {
   type BaseProperty,
   BaseSchema,

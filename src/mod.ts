@@ -54,17 +54,31 @@ const styles = css`
     padding: 0.5rem;
     font-size: var(--text-base, 1rem);
 
-    p, ul, h1, h2, h3, h4, h5, h6 {
+    p,
+    ul,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
       &:first-child {
         margin-top: 0;
       }
     }
 
-    h1, h2, h3, h4, h5, h6 {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
       font-weight: bold;
     }
 
-    h1, h2, h3 {
+    h1,
+    h2,
+    h3 {
       margin-top: 1rem;
       margin-bottom: 0.75rem;
     }
@@ -84,7 +98,11 @@ const styles = css`
       line-height: var(--text-lg--line-height, calc(1.75 / 1.125));
     }
 
-    p, ul, h4, h5, h6 {
+    p,
+    ul,
+    h4,
+    h5,
+    h6 {
       margin-top: 0.5rem;
       margin-bottom: 0.5rem;
     }
@@ -128,7 +146,8 @@ const styles = css`
       overflow: hidden;
     }
 
-    th, td {
+    th,
+    td {
       border: 1px solid var(--color-primary-100, rgb(0 0 0 / 0.1));
       padding: 0.375rem 0.5rem;
       vertical-align: top;
@@ -136,7 +155,11 @@ const styles = css`
 
     th {
       font-weight: bold;
-      background-color: color-mix(in srgb, var(--color-primary-100, rgb(0 0 0 / 0.1)) 40%, transparent);
+      background-color: color-mix(
+        in srgb,
+        var(--color-primary-100, rgb(0 0 0 / 0.1)) 40%,
+        transparent
+      );
     }
 
     td {
