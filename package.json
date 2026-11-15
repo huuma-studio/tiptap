@@ -8,13 +8,13 @@
     "lint": "vp lint",
     "fmt": "vp fmt",
     "test": "vp test",
-    "publish:check": "jsr publish --dry-run --allow-dirty",
-    "release": "jsr publish"
+    "publish:check": "deno publish --dry-run --allow-dirty",
+    "release": "deno publish"
   },
   "dependencies": {
-    "@huuma/icons": "npm:@jsr/huuma__icons@^0.3.0",
-    "@huuma/ui": "npm:@jsr/huuma__ui@^0.3.0",
-    "@huuma/validate": "npm:@jsr/huuma__validate@^0.2.1",
+    "@huuma/icons": "jsr:^0.3.0",
+    "@huuma/ui": "jsr:^0.3.0",
+    "@huuma/validate": "jsr:^0.2.1",
     "@tiptap/core": "^3.34.0",
     "@tiptap/extension-bold": "^3.34.0",
     "@tiptap/extension-code": "^3.34.0",
@@ -33,7 +33,6 @@
   },
   "devDependencies": {
     "@types/node": "^24.19.2",
-    "jsr": "0.14.3",
     "vite-plus": "1.3.0"
   },
   "engines": {
