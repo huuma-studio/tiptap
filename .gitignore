@@ -1,2 +1,6 @@
 .zed/*
-deno.lock
+.DS_Store
+node_modules/
+.vite/
+.cache/
+dist/

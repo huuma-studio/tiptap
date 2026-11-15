@@ -1,3 +1,4 @@
+/** @jsxImportSource @huuma/ui */
 /**
  * Heading node extension for the rich text editor.
  *
@@ -56,9 +57,7 @@ const toolbarElement =
  * are available.
  */
 const HeadingExtension: EditorExtension<typeof Heading> & {
-  configure: (
-    levels: (1 | 2 | 3 | 4 | 5 | 6)[],
-  ) => EditorExtension<typeof Heading>;
+  configure: (levels: (1 | 2 | 3 | 4 | 5 | 6)[]) => EditorExtension<typeof Heading>;
 } = {
   extension: Heading.configure({ levels: defaultLevels }),
   toolbarElement: toolbarElement(defaultLevels),

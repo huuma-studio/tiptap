@@ -1,3 +1,4 @@
+/** @jsxImportSource @huuma/ui */
 /**
  * Italic mark extension for the rich text editor.
  *
@@ -12,9 +13,7 @@ import ItalicIcon from "@huuma/icons/lucide/italic";
 /** Tiptap italic mark with a toolbar toggle button. */
 const ItalicExtension: EditorExtension<typeof Italic> = {
   extension: Italic,
-  toolbarElement: (
-    editor,
-  ) => {
+  toolbarElement: (editor) => {
     return (
       <ToolBarButton
         active={editor.get?.isActive("italic")}

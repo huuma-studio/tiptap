@@ -1,0 +1,29 @@
+{
+  "name": "@huuma/tiptap",
+  "version": "0.4.0",
+  "description": "Rich text editor built on Tiptap for @huuma/ui applications",
+  "license": "MIT",
+  "exports": {
+    ".": "./src/mod.ts",
+    "./editor": "./src/editor/mod.tsx",
+    "./marks/bold": "./src/marks/bold.tsx",
+    "./marks/code": "./src/marks/code.tsx",
+    "./marks/italic": "./src/marks/italic.tsx",
+    "./marks/link": "./src/marks/link.tsx",
+    "./nodes/code-block": "./src/nodes/code-block.tsx",
+    "./nodes/extension-list": "./src/nodes/extension-list.tsx",
+    "./nodes/table": "./src/nodes/table.tsx",
+    "./nodes/heading": "./src/nodes/heading.tsx",
+    "./nodes/text": "./src/nodes/text.tsx",
+    "./markdown": "./src/markdown/mod.ts",
+    "./schema": "./src/schema/mod.ts"
+  },
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "@huuma/ui"
+  },
+  "publish": {
+    "include": ["src", "README.md"],
+    "exclude": ["src/**/*.test.ts"]
+  }
+}

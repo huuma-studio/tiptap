@@ -1,3 +1,4 @@
+/** @jsxImportSource @huuma/ui */
 /**
  * Code block node extension for the rich text editor.
  *
@@ -12,9 +13,7 @@ import CodeXmlIcon from "@huuma/icons/lucide/code-xml";
 /** Tiptap code block node with a toolbar toggle button. */
 const CodeBlockExtension: EditorExtension<typeof CodeBlock> = {
   extension: CodeBlock,
-  toolbarElement: (
-    editor,
-  ) => {
+  toolbarElement: (editor) => {
     return (
       <ToolBarButton
         active={editor.get?.isActive("codeBlock")}

@@ -1,3 +1,4 @@
+/** @jsxImportSource @huuma/ui */
 /**
  * Core text nodes for the rich text editor.
  *
