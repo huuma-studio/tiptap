@@ -20,7 +20,8 @@
   },
   "compilerOptions": {
     "jsx": "react-jsx",
-    "jsxImportSource": "@huuma/ui"
+    "jsxImportSource": "@huuma/ui",
+    "lib": ["dom", "dom.iterable", "dom.asynciterable", "deno.ns"]
   },
   "publish": {
     "include": ["src", "README.md"],
