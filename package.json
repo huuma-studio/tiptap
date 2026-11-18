@@ -12,10 +12,11 @@
     "release": "deno publish"
   },
   "dependencies": {
-    "@huuma/icons": "jsr:^0.3.0",
+    "@huuma/icons": "jsr:^0.3.1",
     "@huuma/ui": "jsr:^0.3.0",
     "@huuma/validate": "jsr:^0.2.1",
     "@tiptap/core": "^3.34.0",
+    "@tiptap/extension-blockquote": "^3.34.0",
     "@tiptap/extension-bold": "^3.34.0",
     "@tiptap/extension-code": "^3.34.0",
     "@tiptap/extension-code-block": "^3.34.0",
@@ -25,8 +26,10 @@
     "@tiptap/extension-link": "^3.34.0",
     "@tiptap/extension-list": "^3.34.0",
     "@tiptap/extension-paragraph": "^3.34.0",
+    "@tiptap/extension-strike": "^3.34.0",
     "@tiptap/extension-table": "^3.34.0",
     "@tiptap/extension-text": "^3.34.0",
+    "@tiptap/extensions": "^3.34.0",
     "@tiptap/html": "^3.34.0",
     "@tiptap/markdown": "^3.34.0",
     "@tiptap/pm": "^3.34.0"

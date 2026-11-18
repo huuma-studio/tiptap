@@ -1,4 +1,3 @@
-/** @jsxImportSource @huuma/ui */
 /**
  * Table node extensions for the rich text editor.
  *
@@ -13,33 +12,33 @@ import { Table } from "@tiptap/extension-table/table";
 import { TableRow } from "@tiptap/extension-table/row";
 import { TableCell } from "@tiptap/extension-table/cell";
 import { TableHeader } from "@tiptap/extension-table/header";
+import { jsx } from "@huuma/ui/jsx-runtime";
 import TableIcon from "@huuma/icons/lucide/table";
 
-import type { EditorExtension } from "../editor/mod.tsx";
-import { ToolBarButton } from "../editor/toolbar.tsx";
+import type { EditorExtension } from "../editor/mod.ts";
+import { ToolBarButton } from "../editor/toolbar.ts";
 
 /** Tiptap table node with a toolbar button to insert a table. */
 export const TableExtension: EditorExtension<typeof Table> = {
   extension: Table,
   toolbarElement: (editor) => {
-    return (
-      <ToolBarButton
-        active={editor.get?.isActive("table")}
-        on-click={() => {
-          editor.get
-            ?.chain()
-            .focus()
-            .insertTable({
-              rows: 3,
-              cols: 3,
-              withHeaderRow: true,
-            })
-            .run();
-        }}
-      >
-        <TableIcon size={18} />
-      </ToolBarButton>
-    );
+    return jsx(ToolBarButton, {
+      active: editor.get?.isActive("table"),
+      label: "Insert table",
+      toggle: false,
+      "on-click": () => {
+        editor.get
+          ?.chain()
+          .focus()
+          .insertTable({
+            rows: 3,
+            cols: 3,
+            withHeaderRow: true,
+          })
+          .run();
+      },
+      children: jsx(TableIcon, { size: 18 }),
+    });
   },
 };
 

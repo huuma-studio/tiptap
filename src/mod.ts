@@ -1,7 +1,7 @@
 /**
  * Core module for the `@huuma/tiptap` rich text editor package.
  *
- * Provides {@linkcode registerTitap} to register the editor's global stylesheet
+ * Provides {@linkcode registerTiptap} to register the editor's global stylesheet
  * with a `@huuma/ui` application.
  *
  * @module
@@ -14,8 +14,8 @@ const styles = css`
   .rich-text-editor {
     width: 100%;
     background-color: var(--rich-text-editor-bg-color, white);
-    border: 1px solid var(--color-primary-100, rgb(0 0 0 / 0.1));
-    border-radius: 0.25rem;
+    border: var(--rich-text-editor-border, 1px solid var(--color-primary-100, rgb(0 0 0 / 0.1)));
+    border-radius: var(--rich-text-editor-radius, 0.25rem);
   }
 
   /* Opt-in dark mode via the Tailwind class convention: only apps that toggle
@@ -50,12 +50,19 @@ const styles = css`
     box-shadow: 0 0 0 3px var(--color-primary-200, rgb(0 0 0 / 0.2));
   }
 
+  .rich-text-editor__toolbar__button:focus-visible {
+    outline: 2px solid var(--color-primary-400, rgb(0 0 0 / 0.4));
+    outline-offset: 1px;
+  }
+
   .tiptap {
-    padding: 0.5rem;
+    padding: var(--rich-text-editor-padding, 0.5rem);
     font-size: var(--text-base, 1rem);
 
     p,
     ul,
+    ol,
+    blockquote,
     h1,
     h2,
     h3,
@@ -100,6 +107,8 @@ const styles = css`
 
     p,
     ul,
+    ol,
+    blockquote,
     h4,
     h5,
     h6 {
@@ -110,6 +119,29 @@ const styles = css`
     ul {
       list-style-type: disc;
       padding-left: 1.25rem;
+    }
+
+    ol {
+      list-style-type: decimal;
+      padding-left: 1.5rem;
+    }
+
+    blockquote {
+      border-left: 3px solid var(--color-primary-200, rgb(0 0 0 / 0.2));
+      padding-left: 0.75rem;
+      color: var(--color-primary-700, inherit);
+    }
+
+    s {
+      text-decoration: line-through;
+    }
+
+    p.is-editor-empty:first-child::before {
+      content: attr(data-placeholder);
+      float: left;
+      height: 0;
+      pointer-events: none;
+      color: var(--rich-text-editor-placeholder-color, rgb(0 0 0 / 0.4));
     }
 
     a {
@@ -167,6 +199,10 @@ const styles = css`
     }
   }
 
+  .rich-text-editor:where(.dark, .dark *) .tiptap p.is-editor-empty:first-child::before {
+    color: var(--rich-text-editor-placeholder-color, rgb(255 255 255 / 0.4));
+  }
+
   .tiptap:focus {
     outline-style: solid;
     outline-width: 3px;
@@ -175,10 +211,19 @@ const styles = css`
 `;
 
 /** Registers the rich text editor stylesheet with the given `@huuma/ui` application. */
-export function registerTitap(app: UIApp<UIAppContext>) {
+export function registerTiptap(app: UIApp<UIAppContext>) {
   app.addStylesheet({
     entrypoint: true,
     name: "rich-text-editor",
     content: styles,
   });
+}
+
+/**
+ * Registers the rich text editor stylesheet with the given `@huuma/ui` application.
+ *
+ * @deprecated Use {@linkcode registerTiptap}; this misspelled name stays for existing apps.
+ */
+export function registerTitap(app: UIApp<UIAppContext>) {
+  registerTiptap(app);
 }

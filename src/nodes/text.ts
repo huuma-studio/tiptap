@@ -1,4 +1,3 @@
-/** @jsxImportSource @huuma/ui */
 /**
  * Core text nodes for the rich text editor.
  *
@@ -12,7 +11,7 @@ import Document from "@tiptap/extension-document";
 import Paragraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
 
-import type { EditorExtension } from "../editor/mod.tsx";
+import type { EditorExtension } from "../editor/mod.ts";
 
 const DocumentExtension: EditorExtension<typeof Document> = {
   extension: Document,

@@ -6,7 +6,7 @@ A rich text editor built on [Tiptap](https://tiptap.dev/) for
 ## Usage
 
 ```tsx
-import { registerTitap } from "@huuma/tiptap";
+import { registerTiptap } from "@huuma/tiptap";
 import { RichTextEditor } from "@huuma/tiptap/editor";
 import TextExtensions from "@huuma/tiptap/nodes/text";
 import HeadingExtension from "@huuma/tiptap/nodes/heading";
@@ -15,7 +15,7 @@ import ItalicExtension from "@huuma/tiptap/marks/italic";
 import LinkExtension from "@huuma/tiptap/marks/link";
 
 // Register the editor stylesheet with your app
-registerTitap(app);
+registerTiptap(app);
 
 // Render an editable rich text editor
 <RichTextEditor
@@ -31,6 +31,59 @@ registerTitap(app);
 />;
 ```
 
+`registerTitap` (the earlier, misspelled name) still works.
+
+The modules are plain TypeScript with `jsx()` calls, so they need no JSX
+settings in the app and work from npm (via JSR's npm registry) as well as Deno.
+
+### Props
+
+`RichTextEditor` takes:
+
+| Prop | |
+| --- | --- |
+| `extensions` | The extensions (required). |
+| `editable` | Interactive editor when `true`; otherwise the content is rendered as static HTML. |
+| `content` | The initial content: Tiptap JSON, or a string (Markdown with the Markdown extension, HTML otherwise). |
+| `inputName`, `inputId` | Render a hidden `<input>` holding the content, to submit with a form. |
+| `inputFormat` | What the hidden input holds: `"html"` (default), `"json"` or `"markdown"`. |
+| `on-change` | `(json, editor)`: on every change, with the Tiptap JSON and the Tiptap editor. |
+| `on-blur`, `on-focus` | `(editor, event)`: when the focus leaves or enters the editor (its text and toolbar; moving between them doesn't count). |
+| `on-create` | `(editor)`: once the Tiptap editor exists, in the browser. |
+| `placeholder` | Text shown while the editor is empty. |
+| `label` | The text area's accessible name (`aria-label`). |
+| `class` | Classes added to the wrapper (`.rich-text-editor`, or the read-only `<div>`). |
+| `toolbar` | `false` hides the toolbar. |
+| `toolbarLabel` | The toolbar's accessible name (default "Formatting"). |
+
+### Markdown
+
+With `@huuma/tiptap/markdown` among the extensions, string content is Markdown:
+in the editor, rendered read-only, and in the hidden input's first value.
+Read it back with `editor.getMarkdown()`, e.g. when the editor loses focus:
+
+```tsx
+<RichTextEditor
+  editable
+  extensions={[...TextExtensions, BoldExtension, MarkdownExtension]}
+  content={description}
+  placeholder="Add a description…"
+  on-blur={(editor) => save(editor.getMarkdown())}
+/>;
+```
+
+Without an editor, e.g. on the server, convert with the same extensions:
+
+```ts
+import { jsonToMarkdown, markdownToJSON } from "@huuma/tiptap/markdown";
+
+const json = markdownToJSON("Hello **world**", extensions);
+const markdown = jsonToMarkdown(json, extensions);
+```
+
+The `Editor` class also has `toJSON(content)`, `toMarkdown(content)` and
+`serialize(content, "html" | "json" | "markdown")`.
+
 ## Theming
 
 The registered stylesheet is token-driven: toolbar buttons, active states, code,
@@ -45,13 +98,21 @@ class on `<html>` (or any ancestor of the editor) get a dark editor surface
 overrides (e.g. `.dark .rich-text-editor { … }`) always win. Apps without a
 `dark` class keep the original white surface.
 
-To customize the editor surface in either mode, set a single CSS variable:
+To customize the editor in either mode, set CSS variables (here with their
+defaults):
 
 ```css
 :root {
-  --rich-text-editor-bg-color: var(--color-gray-50);
+  --rich-text-editor-bg-color: white;
+  --rich-text-editor-border: 1px solid var(--color-primary-100);
+  --rich-text-editor-radius: 0.25rem;
+  --rich-text-editor-padding: 0.5rem;
+  --rich-text-editor-placeholder-color: rgb(0 0 0 / 0.4);
 }
 ```
+
+They can also be set on one editor through its `class`, e.g. a borderless one
+with `--rich-text-editor-border: none`.
 
 ## Extensions
 
@@ -60,8 +121,10 @@ To customize the editor surface in either mode, set a single CSS variable:
 - `@huuma/tiptap/nodes/text` — Document, Paragraph, and Text (required)
 - `@huuma/tiptap/nodes/heading` — Headings (levels 1–3 by default, configurable
   via `HeadingExtension.configure([1, 2])`)
-- `@huuma/tiptap/nodes/extension-list` — Bullet list and list item
+- `@huuma/tiptap/nodes/extension-list` — Bullet list and list item (default
+  export); also `OrderedListExtension` for numbered lists
 - `@huuma/tiptap/nodes/code-block` — Fenced code blocks
+- `@huuma/tiptap/nodes/blockquote` — Blockquotes
 - `@huuma/tiptap/nodes/table` — Table, table row, table cell, and table header
 
 ### Marks
@@ -70,12 +133,28 @@ To customize the editor surface in either mode, set a single CSS variable:
 - `@huuma/tiptap/marks/italic` — Italic
 - `@huuma/tiptap/marks/link` — Link
 - `@huuma/tiptap/marks/code` — Inline code
+- `@huuma/tiptap/marks/strike` — Strikethrough
 
 ### Other
 
-- `@huuma/tiptap/markdown` — Enables Markdown as the content format
+- `@huuma/tiptap/markdown` — Enables Markdown as the content format; also
+  `markdownToJSON` and `jsonToMarkdown`
 - `@huuma/tiptap/schema` — Validation schema for Tiptap document JSON
   (integrates with `@huuma/validate`)
+
+## Upgrading from 0.4
+
+Nothing has to change. 0.5 only adds props, exports and extensions:
+
+- **Same defaults.** The hidden input still holds HTML by default, string
+  content without the Markdown extension is still HTML, and the extensions'
+  default exports are unchanged.
+- **Labelled toolbar.** Toolbar buttons now carry `aria-label`, `title` and
+  `aria-pressed`, and the toolbar is a `role="toolbar"`.
+- **Toolbar keeps the editor's focus.** Clicking a toolbar button no longer
+  takes the focus from the editor.
+- **One fix.** With the Markdown extension, a Markdown string is now rendered
+  read-only as formatted HTML instead of as its literal text.
 
 ## Development
 

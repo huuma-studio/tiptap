@@ -1,30 +1,30 @@
 {
   "name": "@huuma/tiptap",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Rich text editor built on Tiptap for @huuma/ui applications",
   "license": "MIT",
   "exports": {
     ".": "./src/mod.ts",
-    "./editor": "./src/editor/mod.tsx",
-    "./marks/bold": "./src/marks/bold.tsx",
-    "./marks/code": "./src/marks/code.tsx",
-    "./marks/italic": "./src/marks/italic.tsx",
-    "./marks/link": "./src/marks/link.tsx",
-    "./nodes/code-block": "./src/nodes/code-block.tsx",
-    "./nodes/extension-list": "./src/nodes/extension-list.tsx",
-    "./nodes/table": "./src/nodes/table.tsx",
-    "./nodes/heading": "./src/nodes/heading.tsx",
-    "./nodes/text": "./src/nodes/text.tsx",
+    "./editor": "./src/editor/mod.ts",
+    "./marks/bold": "./src/marks/bold.ts",
+    "./marks/code": "./src/marks/code.ts",
+    "./marks/italic": "./src/marks/italic.ts",
+    "./marks/link": "./src/marks/link.ts",
+    "./marks/strike": "./src/marks/strike.ts",
+    "./nodes/code-block": "./src/nodes/code-block.ts",
+    "./nodes/blockquote": "./src/nodes/blockquote.ts",
+    "./nodes/extension-list": "./src/nodes/extension-list.ts",
+    "./nodes/table": "./src/nodes/table.ts",
+    "./nodes/heading": "./src/nodes/heading.ts",
+    "./nodes/text": "./src/nodes/text.ts",
     "./markdown": "./src/markdown/mod.ts",
     "./schema": "./src/schema/mod.ts"
   },
   "compilerOptions": {
-    "jsx": "react-jsx",
-    "jsxImportSource": "@huuma/ui",
     "lib": ["dom", "dom.iterable", "dom.asynciterable", "deno.ns"]
   },
   "publish": {
     "include": ["src", "README.md"],
-    "exclude": ["src/**/*.test.ts"]
+    "exclude": ["src/**/*.test.ts", "src/**/__snapshots__"]
   }
 }
