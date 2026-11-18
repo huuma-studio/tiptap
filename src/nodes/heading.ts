@@ -1,4 +1,3 @@
-/** @jsxImportSource @huuma/ui */
 /**
  * Heading node extension for the rich text editor.
  *
@@ -15,39 +14,38 @@ import Heading3Icon from "@huuma/icons/lucide/heading-3";
 import Heading4Icon from "@huuma/icons/lucide/heading-4";
 import Heading5Icon from "@huuma/icons/lucide/heading-5";
 import Heading6Icon from "@huuma/icons/lucide/heading-6";
-import type { JSX } from "@huuma/ui/jsx-runtime";
+import { Fragment, type JSX, jsx } from "@huuma/ui/jsx-runtime";
 import Heading from "@tiptap/extension-heading";
 import type { Editor } from "@tiptap/core";
 import type { Ref } from "@huuma/ui/ref";
 
-import type { EditorExtension } from "../editor/mod.tsx";
-import { ToolBarButton } from "../editor/toolbar.tsx";
+import type { EditorExtension } from "../editor/mod.ts";
+import { ToolBarButton } from "../editor/toolbar.ts";
 
 type Levels = (1 | 2 | 3 | 4 | 5 | 6)[];
 const defaultLevels: Levels = [1, 2, 3];
 
+const icons = [Heading1Icon, Heading2Icon, Heading3Icon, Heading4Icon, Heading5Icon, Heading6Icon];
+
 const toolbarElement =
   (levels: (1 | 2 | 3 | 4 | 5 | 6)[]) =>
   (editor: Ref<Editor | null>): JSX.Element => {
-    return (
-      <>
-        {levels.map((level) => (
-          <ToolBarButton
-            active={editor.get?.isActive("heading", { level })}
-            on-click={() => {
+    return jsx(Fragment, {
+      children: levels.map((level) =>
+        jsx(
+          ToolBarButton,
+          {
+            active: editor.get?.isActive("heading", { level }),
+            label: `Heading ${level}`,
+            "on-click": () => {
               editor.get?.chain().focus().toggleHeading({ level }).run();
-            }}
-          >
-            {level === 1 && <Heading1Icon size={18} />}
-            {level === 2 && <Heading2Icon size={18} />}
-            {level === 3 && <Heading3Icon size={18} />}
-            {level === 4 && <Heading4Icon size={18} />}
-            {level === 5 && <Heading5Icon size={18} />}
-            {level === 6 && <Heading6Icon size={18} />}
-          </ToolBarButton>
-        ))}
-      </>
-    );
+            },
+            children: jsx(icons[level - 1]!, { size: 18 }),
+          },
+          level,
+        ),
+      ),
+    });
   };
 
 /**

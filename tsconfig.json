@@ -9,8 +9,6 @@
     "noEmit": true,
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
-    "jsx": "react-jsx",
-    "jsxImportSource": "@huuma/ui",
     "skipLibCheck": true
   },
   "include": ["src", "vite.config.ts"]
