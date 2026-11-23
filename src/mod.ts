@@ -256,12 +256,13 @@ const styles = css`
     }
   }
 
-  /* Read-only: nothing to tick, and no layout of its own (e.g. table widths). */
+  /* Read-only: its checkboxes are disabled (RichTextEditor), but show as
+     they are; no layout of its own (e.g. table widths). */
   .rich-text-content {
     overflow-wrap: anywhere;
 
-    input[type="checkbox"] {
-      pointer-events: none;
+    input[type="checkbox"]:disabled {
+      opacity: 1;
     }
 
     table {

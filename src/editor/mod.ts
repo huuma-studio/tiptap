@@ -421,6 +421,15 @@ export interface RichTextEditorProps extends EditableOptions {
 }
 
 /**
+ * Static HTML as read-only: its task list checkboxes disabled, so they can't
+ * be ticked by click, label or keyboard. Only the renderer's own `<input>`
+ * tags match: text in the content is escaped (`&lt;input`).
+ */
+function readOnly(html: string): string {
+  return html.replace(/<input type="checkbox"/g, '<input disabled type="checkbox"');
+}
+
+/**
  * A ready-to-use rich text editor component.
  *
  * Renders an interactive Tiptap editor when `editable` is `true`, or static
@@ -460,7 +469,7 @@ export function RichTextEditor({
             jsx("div", {
               class: className ? `rich-text-content ${className}` : "rich-text-content",
               dangerouslySetInnerHTML: {
-                __html: editorRef.get.serialize(content),
+                __html: readOnly(editorRef.get.serialize(content)),
               },
             }),
             (inputName || inputId) &&

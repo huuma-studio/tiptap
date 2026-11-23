@@ -93,6 +93,16 @@ test("read-only escapes text and drops what the schema doesn't know", () => {
   expect(html).toContain("&amp;");
 });
 
+test("read-only task checkboxes are disabled, and the editable editor's aren't", () => {
+  const html = render('- [x] done\n- [ ] open\n\n`<input type="checkbox">` as text');
+  expect(html.match(/<input /g)).toHaveLength(2);
+  expect(html.match(/<input disabled type="checkbox"/g)).toHaveLength(2);
+  expect(html).toContain('<code>&lt;input type="checkbox"&gt;</code>');
+  expect(
+    render("- [ ] open", { editable: true, inputName: "body", inputFormat: "markdown" }),
+  ).not.toContain("disabled");
+});
+
 test("read-only renders an empty element for no content", () => {
   expect(render("")).toBe('<div class="rich-text-content"></div>');
 });
