@@ -75,3 +75,24 @@ test("the Markdown extension brings Markdown as its content format", () => {
   expect(MarkdownExtension.format?.name).toEqual("markdown");
   expect(MarkdownExtension.initOptions).toEqual({ contentType: "markdown" });
 });
+
+test("task lists, dividers and line breaks round-trip", async () => {
+  const { HardBreakExtension } = await import("../nodes/text.ts");
+  const { TaskListExtensions } = await import("../nodes/extension-list.ts");
+  const { default: HorizontalRuleExtension } = await import("../nodes/horizontal-rule.ts");
+  const more = [...extensions, HardBreakExtension, ...TaskListExtensions, HorizontalRuleExtension];
+  const source = ["- [x] done", "- [ ] open", "", "---", "", "one\\", "two"].join("\n");
+  const json = markdownToJSON(source, more);
+  expect(json.content?.map((node) => node.type)).toEqual([
+    "taskList",
+    "horizontalRule",
+    "paragraph",
+  ]);
+  expect(json.content?.[0]?.content?.map((item) => item.attrs?.checked)).toEqual([true, false]);
+  expect(json.content?.[2]?.content?.map((node) => node.type)).toEqual([
+    "text",
+    "hardBreak",
+    "text",
+  ]);
+  expect(markdownToJSON(jsonToMarkdown(json, more), more)).toEqual(json);
+});

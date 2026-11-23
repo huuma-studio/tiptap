@@ -1,6 +1,6 @@
 {
   "name": "@huuma/tiptap",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Rich text editor built on Tiptap for @huuma/ui applications",
   "license": "MIT",
   "exports": {
@@ -16,6 +16,7 @@
     "./nodes/extension-list": "./src/nodes/extension-list.ts",
     "./nodes/table": "./src/nodes/table.ts",
     "./nodes/heading": "./src/nodes/heading.ts",
+    "./nodes/horizontal-rule": "./src/nodes/horizontal-rule.ts",
     "./nodes/text": "./src/nodes/text.ts",
     "./markdown": "./src/markdown/mod.ts",
     "./schema": "./src/schema/mod.ts"

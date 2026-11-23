@@ -26,7 +26,8 @@ import {
 } from "@tiptap/core";
 import { Placeholder } from "@tiptap/extensions";
 
-import { generateHTML, generateJSON } from "@tiptap/html";
+import { generateJSON } from "@tiptap/html";
+import { renderToHTMLString } from "@tiptap/static-renderer/pm/html-string";
 
 import { Fragment, type JSX, jsx } from "@huuma/ui/jsx-runtime";
 import { ToolBar } from "./toolbar.ts";
@@ -92,7 +93,9 @@ export class Editor {
    * Generates HTML from JSON content using the provided extensions.
    *
    * This is useful when you need to serialize editor content to HTML
-   * without creating an editor instance.
+   * without creating an editor instance. Needs no DOM, so it also works on
+   * the server and in workers: text and attribute values are escaped, and
+   * only what the extensions' schema knows is rendered.
    *
    * @param content - The JSON content to convert to HTML.
    * @param extensions - The Tiptap extensions to use for rendering.
@@ -111,14 +114,15 @@ export class Editor {
    * ```
    */
   static generateHTML(content: JSONContent, extensions: Extensions): string {
-    return generateHTML(content, [...extensions]);
+    return renderToHTMLString({ content, extensions: [...extensions] });
   }
 
   /**
    * Parses HTML content into JSON using the provided extensions.
    *
    * This is useful when you need to convert HTML to Tiptap's JSON format
-   * without creating an editor instance.
+   * without creating an editor instance. Parsing HTML needs a DOM: in the
+   * browser, or on Node with `happy-dom` installed.
    *
    * @param content - The HTML string to parse into JSON.
    * @param extensions - The Tiptap extensions to use for parsing.
@@ -392,7 +396,11 @@ export interface EditorRenderProps extends Omit<Props, "children">, EditableOpti
 
 /** Props accepted by {@linkcode RichTextEditor}. */
 export interface RichTextEditorProps extends EditableOptions {
-  /** When `true` the editor is interactive; otherwise content is rendered as static HTML. */
+  /**
+   * When `true` the editor is interactive; otherwise content is rendered as
+   * static HTML in a `.rich-text-content` element, styled like the editor's
+   * text. Static HTML needs no DOM, so it renders on the server too.
+   */
   editable?: boolean;
   /**
    * Initial content for the editor: Tiptap JSON, or a string. A string is
@@ -410,6 +418,15 @@ export interface RichTextEditorProps extends EditableOptions {
    * Tiptap JSON and the Tiptap editor.
    */
   "on-change"?: (content: DocumentType, editor: Tiptap) => void;
+}
+
+/**
+ * Static HTML as read-only: its task list checkboxes disabled, so they can't
+ * be ticked by click, label or keyboard. Only the renderer's own `<input>`
+ * tags match: text in the content is escaped (`&lt;input`).
+ */
+function readOnly(html: string): string {
+  return html.replace(/<input type="checkbox"/g, '<input disabled type="checkbox"');
 }
 
 /**
@@ -450,9 +467,9 @@ export function RichTextEditor({
       : jsx(Fragment, {
           children: [
             jsx("div", {
-              class: className,
+              class: className ? `rich-text-content ${className}` : "rich-text-content",
               dangerouslySetInnerHTML: {
-                __html: editorRef.get.serialize(content),
+                __html: readOnly(editorRef.get.serialize(content)),
               },
             }),
             (inputName || inputId) &&

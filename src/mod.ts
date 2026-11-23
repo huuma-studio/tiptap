@@ -58,7 +58,11 @@ const styles = css`
   .tiptap {
     padding: var(--rich-text-editor-padding, 0.5rem);
     font-size: var(--text-base, 1rem);
+  }
 
+  /* The text, in the editor and rendered read-only (RichTextEditor without
+     editable). The read-only element takes its size from where it's placed. */
+  :is(.tiptap, .rich-text-content) {
     p,
     ul,
     ol,
@@ -72,6 +76,10 @@ const styles = css`
       &:first-child {
         margin-top: 0;
       }
+    }
+
+    > :last-child {
+      margin-bottom: 0;
     }
 
     h1,
@@ -196,6 +204,69 @@ const styles = css`
 
     td {
       font-weight: normal;
+    }
+
+    /* Tiptap wraps the text of cells and list items in paragraphs. */
+    :is(th, td) > p {
+      margin: 0;
+    }
+
+    li > p {
+      margin-top: 0.125rem;
+      margin-bottom: 0.125rem;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid var(--color-primary-100, rgb(0 0 0 / 0.1));
+      margin: 1rem 0;
+    }
+
+    ul[data-type="taskList"] {
+      list-style: none;
+      padding-left: 0.25rem;
+
+      ul[data-type="taskList"] {
+        padding-left: 1.25rem;
+      }
+    }
+
+    li[data-type="taskItem"] {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+
+      > label {
+        flex-shrink: 0;
+        user-select: none;
+      }
+
+      > div {
+        flex: 1 1 auto;
+        min-width: 0;
+
+        > p {
+          margin: 0;
+        }
+      }
+    }
+
+    li[data-checked="true"] > div {
+      color: var(--color-primary-700, rgb(0 0 0 / 0.6));
+    }
+  }
+
+  /* Read-only: its checkboxes are disabled (RichTextEditor), but show as
+     they are; no layout of its own (e.g. table widths). */
+  .rich-text-content {
+    overflow-wrap: anywhere;
+
+    input[type="checkbox"]:disabled {
+      opacity: 1;
+    }
+
+    table {
+      table-layout: auto;
     }
   }
 
