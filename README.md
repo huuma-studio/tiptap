@@ -43,7 +43,7 @@ settings in the app and work from npm (via JSR's npm registry) as well as Deno.
 | Prop | |
 | --- | --- |
 | `extensions` | The extensions (required). |
-| `editable` | Interactive editor when `true`; otherwise the content is rendered as static HTML. |
+| `editable` | Interactive editor when `true`; otherwise the content is rendered as static HTML (see [Read-only](#read-only)). |
 | `content` | The initial content: Tiptap JSON, or a string (Markdown with the Markdown extension, HTML otherwise). |
 | `inputName`, `inputId` | Render a hidden `<input>` holding the content, to submit with a form. |
 | `inputFormat` | What the hidden input holds: `"html"` (default), `"json"` or `"markdown"`. |
@@ -52,9 +52,44 @@ settings in the app and work from npm (via JSR's npm registry) as well as Deno.
 | `on-create` | `(editor)`: once the Tiptap editor exists, in the browser. |
 | `placeholder` | Text shown while the editor is empty. |
 | `label` | The text area's accessible name (`aria-label`). |
-| `class` | Classes added to the wrapper (`.rich-text-editor`, or the read-only `<div>`). |
+| `class` | Classes added to the wrapper (`.rich-text-editor`, or the read-only `.rich-text-content`). |
 | `toolbar` | `false` hides the toolbar. |
 | `toolbarLabel` | The toolbar's accessible name (default "Formatting"). |
+
+### Read-only
+
+Without `editable`, the content is rendered as static HTML in a
+`<div class="rich-text-content">`, styled like the editor's text (headings,
+lists, task lists, tables, code) at the size of where it's placed. No editor is
+created and no DOM is needed, so it renders on the server, also in Cloudflare
+Workers and Deno Deploy. Only what the extensions' schema knows is rendered:
+text and attributes are escaped, raw HTML in Markdown shows as text, images
+show their alt text, and links other than safe URLs lose their `href`. That
+makes it fit for rendering Markdown from elsewhere, e.g. a model's answer:
+
+```tsx
+<RichTextEditor
+  content={answer}
+  class="text-sm"
+  extensions={[
+    ...TextExtensions,
+    HardBreakExtension,
+    HeadingExtension,
+    BoldExtension,
+    ItalicExtension,
+    CodeExtension,
+    LinkExtension,
+    ...ListExtensions,
+    OrderedListExtension,
+    ...TaskListExtensions,
+    ...TableExtensions,
+    HorizontalRuleExtension,
+    BlockquoteExtension,
+    CodeBlockExtension,
+    MarkdownExtension,
+  ]}
+/>;
+```
 
 ### Markdown
 
@@ -118,14 +153,17 @@ with `--rich-text-editor-border: none`.
 
 ### Nodes
 
-- `@huuma/tiptap/nodes/text` — Document, Paragraph, and Text (required)
+- `@huuma/tiptap/nodes/text` — Document, Paragraph, and Text (required); also
+  `HardBreakExtension` for line breaks within a paragraph
 - `@huuma/tiptap/nodes/heading` — Headings (levels 1–3 by default, configurable
   via `HeadingExtension.configure([1, 2])`)
 - `@huuma/tiptap/nodes/extension-list` — Bullet list and list item (default
-  export); also `OrderedListExtension` for numbered lists
+  export); also `OrderedListExtension` for numbered lists and
+  `TaskListExtensions` for task lists (`- [x] done`)
 - `@huuma/tiptap/nodes/code-block` — Fenced code blocks
 - `@huuma/tiptap/nodes/blockquote` — Blockquotes
 - `@huuma/tiptap/nodes/table` — Table, table row, table cell, and table header
+- `@huuma/tiptap/nodes/horizontal-rule` — Dividers (`---`)
 
 ### Marks
 
@@ -141,6 +179,21 @@ with `--rich-text-editor-border: none`.
   `markdownToJSON` and `jsonToMarkdown`
 - `@huuma/tiptap/schema` — Validation schema for Tiptap document JSON
   (integrates with `@huuma/validate`)
+
+## Upgrading from 0.5
+
+Nothing has to change for most apps:
+
+- **Read-only without a DOM.** Static HTML (read-only, and `Editor.generateHTML`)
+  is now rendered by `@tiptap/static-renderer` instead of `@tiptap/html`, so it
+  works on the server without `happy-dom`, e.g. in Cloudflare Workers. The
+  HTML is the same. Parsing HTML (`Editor.generateJSON`, HTML string content)
+  still needs a DOM.
+- **Styled read-only content.** The read-only `<div>` now has the class
+  `rich-text-content` and gets the editor's text styles. Apps that styled it
+  themselves through `class` may want to check it.
+- **Tighter paragraphs in table cells and list items**, in the editor too.
+- **New extensions:** task lists, dividers and hard breaks.
 
 ## Upgrading from 0.4
 

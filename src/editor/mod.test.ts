@@ -38,13 +38,13 @@ const inputValue = (rendered: string) =>
 
 test("read-only renders a Markdown string as HTML with the Markdown extension", () => {
   expect(render({ extensions: markdown, content: "Hello **world**" })).toEqual(
-    "<div><p>Hello <strong>world</strong></p></div>",
+    '<div class="rich-text-content"><p>Hello <strong>world</strong></p></div>',
   );
 });
 
 test("read-only reads a string as HTML without the Markdown extension, as before", () => {
   expect(render({ extensions: html, content: "<p>Hello <strong>world</strong></p>" })).toEqual(
-    "<div><p>Hello <strong>world</strong></p></div>",
+    '<div class="rich-text-content"><p>Hello <strong>world</strong></p></div>',
   );
 });
 
@@ -56,7 +56,7 @@ test("read-only renders JSON content the same with or without the Markdown exten
 
 test("read-only takes a class", () => {
   expect(render({ extensions: html, content: doc, class: "prose" })).toMatch(
-    /^<div class="prose">/,
+    /^<div class="rich-text-content prose">/,
   );
 });
 

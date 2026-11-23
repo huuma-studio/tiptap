@@ -4,21 +4,26 @@
  * Exports {@linkcode BulletListExtension}, {@linkcode OrderedListExtension}
  * and {@linkcode ListItemExtension} individually. The default export is the
  * bullet list with its list item; add {@linkcode OrderedListExtension} for
- * numbered lists:
+ * numbered lists, and {@linkcode TaskListExtensions} for task lists
+ * (`- [x] done` in Markdown):
  *
  * ```ts
- * import ListExtensions, { OrderedListExtension } from "@huuma/tiptap/nodes/extension-list";
+ * import ListExtensions, {
+ *   OrderedListExtension,
+ *   TaskListExtensions,
+ * } from "@huuma/tiptap/nodes/extension-list";
  *
- * const extensions = [...ListExtensions, OrderedListExtension];
+ * const extensions = [...ListExtensions, OrderedListExtension, ...TaskListExtensions];
  * ```
  *
  * @module
  */
 
-import { BulletList, ListItem, OrderedList } from "@tiptap/extension-list";
+import { BulletList, ListItem, OrderedList, TaskItem, TaskList } from "@tiptap/extension-list";
 import { jsx } from "@huuma/ui/jsx-runtime";
 import ListIcon from "@huuma/icons/lucide/list";
 import ListOrderedIcon from "@huuma/icons/lucide/list-ordered";
+import ListTodoIcon from "@huuma/icons/lucide/list-todo";
 
 import type { EditorExtension } from "../editor/mod.ts";
 import { ToolBarButton } from "../editor/toolbar.ts";
@@ -60,5 +65,35 @@ export const OrderedListExtension: EditorExtension<typeof OrderedList> = {
 export const ListItemExtension: EditorExtension<typeof ListItem> = {
   extension: ListItem,
 };
+
+/**
+ * Tiptap task list node (items with a checkbox) with a toolbar toggle
+ * button. Needs {@linkcode TaskItemExtension}: use
+ * {@linkcode TaskListExtensions} for both.
+ */
+export const TaskListExtension: EditorExtension<typeof TaskList> = {
+  extension: TaskList,
+  toolbarElement: (editor) => {
+    return jsx(ToolBarButton, {
+      active: editor.get?.isActive("taskList"),
+      label: "Task list",
+      "on-click": () => {
+        editor.get?.chain().focus().toggleTaskList().run();
+      },
+      children: jsx(ListTodoIcon, { size: 18 }),
+    });
+  },
+};
+
+/** Tiptap task item node (required companion for {@linkcode TaskListExtension}); items may nest. */
+export const TaskItemExtension: EditorExtension<typeof TaskItem> = {
+  extension: TaskItem.configure({ nested: true }),
+};
+
+/** The task list with its task item. */
+export const TaskListExtensions: [typeof TaskListExtension, typeof TaskItemExtension] = [
+  TaskListExtension,
+  TaskItemExtension,
+];
 
 export default [BulletListExtension, ListItemExtension];
