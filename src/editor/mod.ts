@@ -403,6 +403,13 @@ export interface RichTextEditorProps extends EditableOptions {
    */
   editable?: boolean;
   /**
+   * Read-only content only: `false` keeps the keyboard's focus out of it, for
+   * a preview cut short whose hidden rest the Tab key mustn't reach. Its
+   * links leave the Tab order (screen readers still read them, a click still
+   * follows them) and its code blocks don't scroll. Defaults to `true`.
+   */
+  focusable?: boolean;
+  /**
    * Initial content for the editor: Tiptap JSON, or a string. A string is
    * Markdown with the Markdown extension, HTML otherwise.
    */
@@ -422,11 +429,13 @@ export interface RichTextEditorProps extends EditableOptions {
 
 /**
  * Static HTML as read-only: its task list checkboxes disabled, so they can't
- * be ticked by click, label or keyboard. Only the renderer's own `<input>`
- * tags match: text in the content is escaped (`&lt;input`).
+ * be ticked by click, label or keyboard; not `focusable`, its links out of
+ * the Tab order too. Only the renderer's own tags match: text in the content
+ * is escaped (`&lt;input`, `&lt;a`).
  */
-function readOnly(html: string): string {
-  return html.replace(/<input type="checkbox"/g, '<input disabled type="checkbox"');
+function readOnly(html: string, focusable: boolean): string {
+  const disabled = html.replace(/<input type="checkbox"/g, '<input disabled type="checkbox"');
+  return focusable ? disabled : disabled.replace(/<a /g, '<a tabindex="-1" ');
 }
 
 /**
@@ -446,6 +455,7 @@ export function RichTextEditor({
   inputId,
   inputFormat = "html",
   class: className,
+  focusable = true,
   ...options
 }: RichTextEditorProps): JSX.Element {
   const editorRef = $ref(new Editor(extensions));
@@ -467,9 +477,15 @@ export function RichTextEditor({
       : jsx(Fragment, {
           children: [
             jsx("div", {
-              class: className ? `rich-text-content ${className}` : "rich-text-content",
+              class: [
+                "rich-text-content",
+                !focusable && "rich-text-content--unfocusable",
+                className,
+              ]
+                .filter(Boolean)
+                .join(" "),
               dangerouslySetInnerHTML: {
-                __html: readOnly(editorRef.get.serialize(content)),
+                __html: readOnly(editorRef.get.serialize(content), focusable),
               },
             }),
             (inputName || inputId) &&

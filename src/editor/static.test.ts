@@ -103,6 +103,20 @@ test("read-only task checkboxes are disabled, and the editable editor's aren't",
   ).not.toContain("disabled");
 });
 
+test("read-only and not focusable keeps links out of the Tab order", () => {
+  const markdown =
+    "[one](https://example.com/1) and [two](https://example.com/2)\n\n`<a href>` as text";
+  const html = render(markdown, { focusable: false, class: "preview" });
+  expect(html).toMatch(/^<div class="rich-text-content rich-text-content--unfocusable preview">/);
+  expect(html.match(/<a /g)).toHaveLength(2);
+  expect(html.match(/<a tabindex="-1" /g)).toHaveLength(2);
+  expect(html).toContain("<code>&lt;a href&gt;</code>");
+
+  const focusable = render(markdown);
+  expect(focusable).not.toContain("tabindex");
+  expect(focusable).not.toContain("rich-text-content--unfocusable");
+});
+
 test("read-only renders an empty element for no content", () => {
   expect(render("")).toBe('<div class="rich-text-content"></div>');
 });

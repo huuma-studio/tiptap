@@ -265,6 +265,12 @@ const styles = css`
       opacity: 1;
     }
 
+    /* Not focusable (RichTextEditor's focusable={false}): a wide code block
+       doesn't scroll, which would make it a stop for the Tab key. */
+    &.rich-text-content--unfocusable pre {
+      overflow: hidden;
+    }
+
     table {
       table-layout: auto;
     }

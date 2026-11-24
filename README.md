@@ -44,6 +44,7 @@ settings in the app and work from npm (via JSR's npm registry) as well as Deno.
 | --- | --- |
 | `extensions` | The extensions (required). |
 | `editable` | Interactive editor when `true`; otherwise the content is rendered as static HTML (see [Read-only](#read-only)). |
+| `focusable` | Read-only only: `false` keeps the keyboard's focus out of the content, e.g. for a preview cut short (see [Read-only](#read-only)). |
 | `content` | The initial content: Tiptap JSON, or a string (Markdown with the Markdown extension, HTML otherwise). |
 | `inputName`, `inputId` | Render a hidden `<input>` holding the content, to submit with a form. |
 | `inputFormat` | What the hidden input holds: `"html"` (default), `"json"` or `"markdown"`. |
@@ -89,6 +90,17 @@ makes it fit for rendering Markdown from elsewhere, e.g. a model's answer:
     MarkdownExtension,
   ]}
 />;
+```
+
+For a preview cut short (e.g. clipped with `overflow: hidden`), pass
+`focusable={false}`: the keyboard's focus stays out of the hidden rest. Its
+links leave the Tab order (screen readers still read them, a click still
+follows them), and code blocks don't scroll.
+
+```tsx
+<div class="max-h-36 overflow-hidden">
+  <RichTextEditor content={answer} extensions={extensions} focusable={false} />
+</div>
 ```
 
 ### Markdown
@@ -179,6 +191,10 @@ with `--rich-text-editor-border: none`.
   `markdownToJSON` and `jsonToMarkdown`
 - `@huuma/tiptap/schema` — Validation schema for Tiptap document JSON
   (integrates with `@huuma/validate`)
+
+## Upgrading from 0.6
+
+Nothing has to change: 0.7 adds `focusable` for read-only content.
 
 ## Upgrading from 0.5
 
