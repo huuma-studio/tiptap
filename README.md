@@ -65,8 +65,10 @@ lists, task lists, tables, code) at the size of where it's placed. No editor is
 created and no DOM is needed, so it renders on the server, also in Cloudflare
 Workers and Deno Deploy. Only what the extensions' schema knows is rendered:
 text and attributes are escaped, raw HTML in Markdown shows as text, images
-show their alt text, and links other than safe URLs lose their `href`. That
-makes it fit for rendering Markdown from elsewhere, e.g. a model's answer:
+become links to them ("Image: alt text", nothing is loaded), links other than
+safe URLs show as their text, and named character references (`&copy;`,
+`&mdash;`) as their characters, outside code. That makes it fit for rendering
+Markdown from elsewhere, e.g. a model's answer:
 
 ```tsx
 <RichTextEditor

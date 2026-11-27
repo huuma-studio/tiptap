@@ -1,20 +1,59 @@
 /**
  * Link mark extension for the rich text editor.
  *
- * Links open in a new tab with `rel="noopener noreferrer"` by default.
+ * Links open in a new tab with `rel="noopener noreferrer"` by default. A
+ * link whose `href` isn't allowed (e.g. `javascript:`) renders as its text,
+ * not as a link to the page itself. Markdown images become links to them
+ * ("Image: alt text"): nothing is loaded from their host.
  *
  * @module
  */
 
+import { Extension } from "@tiptap/core";
 import Link from "@tiptap/extension-link";
 import { jsx } from "@huuma/ui/jsx-runtime";
 import type { EditorExtension } from "../editor/mod.ts";
 import { ToolBarButton } from "../editor/toolbar.ts";
 import LinkIcon from "@huuma/icons/lucide/link";
 
+/**
+ * Markdown images, as links to them ("Image: alt text"): showing an image
+ * would load it from its host, telling it who's looking.
+ */
+const MarkdownImageLinks = Extension.create({
+  name: "markdownImageLinks",
+  markdownTokenName: "image",
+  parseMarkdown: (token, helpers) => {
+    const href = typeof token.href === "string" ? token.href : "";
+    const alt = typeof token.text === "string" ? token.text.trim() : "";
+    return helpers.applyMark("link", [{ type: "text", text: `Image: ${alt || href}` }], {
+      href,
+      title: token.title || null,
+    });
+  },
+});
+
+/**
+ * Tiptap's link mark, rendering a link whose `href` it doesn't allow as a
+ * plain `<span>` (Tiptap's own keeps the `<a>`, with an empty `href`).
+ */
+const SafeLink: typeof Link = Link.extend({
+  addExtensions() {
+    return [...(this.parent?.() ?? []), MarkdownImageLinks];
+  },
+  renderHTML(props) {
+    const spec = this.parent?.(props);
+    if (Array.isArray(spec) && spec[0] === "a") {
+      const attrs = spec[1] as Record<string, unknown> | undefined;
+      if (!attrs?.href) return ["span", {}, 0];
+    }
+    return spec ?? ["span", {}, 0];
+  },
+});
+
 /** Tiptap link mark with a toolbar toggle button that prompts for a URL. */
 const LinkExtension: EditorExtension<typeof Link> = {
-  extension: Link.configure({
+  extension: SafeLink.configure({
     openOnClick: false,
     HTMLAttributes: {
       rel: "noopener noreferrer",
