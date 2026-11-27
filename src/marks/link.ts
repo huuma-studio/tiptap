@@ -1,7 +1,9 @@
 /**
  * Link mark extension for the rich text editor.
  *
- * Links open in a new tab with `rel="noopener noreferrer"` by default.
+ * Links open in a new tab with `rel="noopener noreferrer"` by default. A
+ * link whose `href` isn't allowed (e.g. `javascript:`) renders as its text,
+ * not as a link to the page itself.
  *
  * @module
  */
@@ -12,9 +14,24 @@ import type { EditorExtension } from "../editor/mod.ts";
 import { ToolBarButton } from "../editor/toolbar.ts";
 import LinkIcon from "@huuma/icons/lucide/link";
 
+/**
+ * Tiptap's link mark, rendering a link whose `href` it doesn't allow as a
+ * plain `<span>` (Tiptap's own keeps the `<a>`, with an empty `href`).
+ */
+const SafeLink: typeof Link = Link.extend({
+  renderHTML(props) {
+    const spec = this.parent?.(props);
+    if (Array.isArray(spec) && spec[0] === "a") {
+      const attrs = spec[1] as Record<string, unknown> | undefined;
+      if (!attrs?.href) return ["span", {}, 0];
+    }
+    return spec ?? ["span", {}, 0];
+  },
+});
+
 /** Tiptap link mark with a toolbar toggle button that prompts for a URL. */
 const LinkExtension: EditorExtension<typeof Link> = {
-  extension: Link.configure({
+  extension: SafeLink.configure({
     openOnClick: false,
     HTMLAttributes: {
       rel: "noopener noreferrer",
