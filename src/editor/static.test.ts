@@ -100,6 +100,16 @@ test("read-only renders a link it doesn't allow as its text", () => {
   expect(html).not.toContain('href=""');
 });
 
+test("read-only renders an image as a link to it, loading nothing", () => {
+  const html = render(
+    "![A chart](https://example.com/c.png) ![](https://example.com/d.png) ![x](javascript:alert(1))",
+  );
+  expect(html).not.toContain("<img");
+  expect(html).toContain('href="https://example.com/c.png">Image: A chart</a>');
+  expect(html).toContain('href="https://example.com/d.png">Image: https://example.com/d.png</a>');
+  expect(html).toContain("<span>Image: x</span>");
+});
+
 test("read-only task checkboxes are disabled, and the editable editor's aren't", () => {
   const html = render('- [x] done\n- [ ] open\n\n`<input type="checkbox">` as text');
   expect(html.match(/<input /g)).toHaveLength(2);
