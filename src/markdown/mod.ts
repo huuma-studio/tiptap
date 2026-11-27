@@ -6,6 +6,10 @@
  * rendered read-only), `editor.getMarkdown()` returns it, and the hidden
  * input can hold it (`inputFormat="markdown"`).
  *
+ * Named character references (`&copy;`, `&mdash;`, `&nbsp;`, …) show as
+ * their characters, outside code, as HTML would show them; Tiptap itself
+ * decodes only `&amp;`, `&lt;`, `&gt;`, `&quot;` and numeric ones.
+ *
  * Also exports {@linkcode markdownToJSON} and {@linkcode jsonToMarkdown} to
  * convert without an editor, e.g. on the server.
  *
@@ -15,7 +19,14 @@
 import { Markdown, MarkdownManager } from "@tiptap/markdown";
 import { Plugin, PluginKey } from "@tiptap/pm/state";
 import { Node as ProseMirrorNode, Slice } from "@tiptap/pm/model";
-import type { AnyExtension, Editor, Extension, JSONContent, Mark, Node } from "@tiptap/core";
+import {
+  type AnyExtension,
+  type Editor,
+  Extension,
+  type JSONContent,
+  type Mark,
+  type Node,
+} from "@tiptap/core";
 import type { ContentFormat, EditorExtension } from "../editor/mod.ts";
 
 /**
@@ -67,8 +78,107 @@ function createMarkdownPastePlugin(editor: Editor) {
   });
 }
 
+/**
+ * The named character references decoded besides Tiptap's own: common
+ * typography and symbols. Unknown names stay as written.
+ */
+const NAMED_REFERENCES: Record<string, string> = {
+  nbsp: "\u00a0",
+  apos: "'",
+  copy: "©",
+  reg: "®",
+  trade: "™",
+  sect: "§",
+  para: "¶",
+  deg: "°",
+  plusmn: "±",
+  times: "×",
+  divide: "÷",
+  middot: "·",
+  bull: "•",
+  hellip: "…",
+  ndash: "–",
+  mdash: "—",
+  lsquo: "‘",
+  rsquo: "’",
+  sbquo: "‚",
+  ldquo: "“",
+  rdquo: "”",
+  bdquo: "„",
+  laquo: "«",
+  raquo: "»",
+  lsaquo: "‹",
+  rsaquo: "›",
+  prime: "′",
+  Prime: "″",
+  dagger: "†",
+  Dagger: "‡",
+  permil: "‰",
+  euro: "€",
+  pound: "£",
+  yen: "¥",
+  cent: "¢",
+  curren: "¤",
+  frac12: "½",
+  frac14: "¼",
+  frac34: "¾",
+  sup1: "¹",
+  sup2: "²",
+  sup3: "³",
+  micro: "µ",
+  iexcl: "¡",
+  iquest: "¿",
+  larr: "←",
+  rarr: "→",
+  uarr: "↑",
+  darr: "↓",
+  harr: "↔",
+  lArr: "⇐",
+  rArr: "⇒",
+  hArr: "⇔",
+  ne: "≠",
+  le: "≤",
+  ge: "≥",
+  asymp: "≈",
+  infin: "∞",
+  minus: "−",
+  check: "✓",
+  hearts: "♥",
+  shy: "\u00ad",
+  zwj: "\u200d",
+  zwnj: "\u200c",
+  ensp: "\u2002",
+  emsp: "\u2003",
+  thinsp: "\u2009",
+};
+
+/**
+ * Decodes the named character references of {@linkcode NAMED_REFERENCES} in
+ * Markdown text: an inline token, so code spans and blocks keep them as
+ * written, and `&amp;copy;` stays `&copy;`.
+ */
+const NamedReferences = Extension.create({
+  name: "markdownNamedReferences",
+  markdownTokenName: "namedReference",
+  markdownTokenizer: {
+    name: "namedReference",
+    level: "inline",
+    start: (src: string) => src.indexOf("&"),
+    tokenize: (src: string) => {
+      const match = /^&([a-zA-Z][a-zA-Z0-9]{1,31});/.exec(src);
+      const text =
+        match && Object.hasOwn(NAMED_REFERENCES, match[1]!) && NAMED_REFERENCES[match[1]!];
+      return text ? { type: "namedReference", raw: match[0], text } : undefined;
+    },
+  },
+  parseMarkdown: (token) => ({ type: "text", text: token.text ?? "" }),
+});
+
 /** Markdown extension that also parses pasted plain text as Markdown. */
 const MarkdownWithPaste: typeof Markdown = Markdown.extend({
+  addExtensions() {
+    return [...(this.parent?.() ?? []), NamedReferences];
+  },
   addProseMirrorPlugins() {
     return [createMarkdownPastePlugin(this.editor)];
   },

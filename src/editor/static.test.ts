@@ -110,6 +110,16 @@ test("read-only renders an image as a link to it, loading nothing", () => {
   expect(html).toContain("<span>Image: x</span>");
 });
 
+test("read-only shows named character references as their characters, but not in code", () => {
+  const html = render(
+    "&copy; 2026 &mdash; **&hellip;** &amp;copy; &bogus; `&copy;`\n\n```\n&mdash;\n```",
+  );
+  expect(html).toContain(
+    "© 2026 — <strong>…</strong> &amp;copy; &amp;bogus; <code>&amp;copy;</code>",
+  );
+  expect(html).toContain("<pre><code>&amp;mdash;</code></pre>");
+});
+
 test("read-only task checkboxes are disabled, and the editable editor's aren't", () => {
   const html = render('- [x] done\n- [ ] open\n\n`<input type="checkbox">` as text');
   expect(html.match(/<input /g)).toHaveLength(2);
